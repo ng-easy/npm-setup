@@ -11,6 +11,11 @@ jobs:
         with:
           persist-credentials: false # Needed so that semantic release can use the admin token
 
+      - name: NPM
+        uses: bahmutov/npm-install@v1
+        with:
+          useRollingCache: true
+
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v2
         env:
