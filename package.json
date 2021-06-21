@@ -1,6 +1,6 @@
 {
   "name": "@ng-easy/npm-setup",
-  "version": "0.0.0",
+  "version": "1.2.0",
   "description": "GitHub Action to automate the installation of npm dependencies for Angular projects",
   "author": "samuelfernandez",
   "homepage": "https://github.com/ng-easy/npm-setup#readme",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ng-easy/npm-setup.git"
+    "url": "https://github.com/ng-easy/npm-setup.git"
   },
   "engines": {
     "node": "^14.0.0",
@@ -21,7 +21,8 @@
     "lint": "eslint .",
     "start": "tsc --watch",
     "package": "rimraf dist && tsc && rimraf dist/**/*.spec.* && ncc build",
-    "test": "jest"
+    "test": "jest",
+    "semantic-release": "semantic-release"
   },
   "dependencies": {
     "@actions/core": "^1.2.6",
@@ -35,6 +36,8 @@
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
     "@ng-easy/eslint-config": "^3.1.1",
+    "@semantic-release/changelog": "^5.0.1",
+    "@semantic-release/git": "^9.0.0",
     "@types/jest": "^26.0.14",
     "@typescript-eslint/eslint-plugin": "^4.27.0",
     "@typescript-eslint/parser": "^4.27.0",
@@ -54,6 +57,7 @@
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.1",
     "rimraf": "^3.0.2",
+    "semantic-release": "^17.4.4",
     "ts-jest": "^27.0.3",
     "typescript": "^4.0.3"
   },
