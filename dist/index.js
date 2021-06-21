@@ -14,7 +14,7 @@ const run = async () => {
     if (!token)
         throw new Error('GitHub token not found');
     const ms = core_1.getInput('milliseconds');
-    core_1.debug(`Waiting ${ms} milliseconds ...`);
+    core_1.info(`Waiting ${ms} milliseconds ...`);
     core_1.debug(new Date().toTimeString());
     await exports.wait(parseInt(ms, 10));
     core_1.debug(new Date().toTimeString());
@@ -25,9 +25,9 @@ const wait = (milliseconds) => {
     return new Promise((resolve) => setTimeout(() => resolve(), milliseconds));
 };
 exports.wait = wait;
-exports.run().catch((error) => {
-    console.error('ERROR', error);
-    core_1.setFailed(error.message);
+exports.run().catch((err) => {
+    core_1.error(err);
+    core_1.setFailed(err.message);
 });
 
 
