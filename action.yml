@@ -10,5 +10,5 @@ runs:
   using: 'node12'
   main: 'dist/index.js'
 branding:
-  icon: 'umbrella'
-  color: 'purple'
+  icon: 'package'
+  color: 'green'
