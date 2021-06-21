@@ -1,0 +1,14 @@
+name: 'npm setup'
+description: 'GitHub Action to automate the installation of npm dependencies for Angular projects'
+author: 'Samuel Fernández <https://github.com/samuelfernandez>'
+inputs:
+  milliseconds:
+    required: true
+    description: 'Number of milliseconds to wait'
+    default: '1000'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
+branding:
+  icon: 'umbrella'
+  color: 'purple'

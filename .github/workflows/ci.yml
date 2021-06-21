@@ -1,0 +1,53 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  ci:
+    name: Build, test and release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2.3.4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2.1.5
+        with:
+          node-version: 14.x
+
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v2.1.6
+        with:
+          path: node_modules
+          key: node-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Cache NPM # Get a cache of packages for clean installs
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        uses: actions/cache@v2.1.6
+        with:
+          path: ~/.npm
+          key: |
+            npm-${{ hashFiles('**/package.json') }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            npm-${{ hashFiles('**/package.json') }}-${{ hashFiles('**/package-lock.json') }}
+            npm-${{ hashFiles('**/package.json') }}
+            npm-
+
+      - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm run test
+
+      - name: Package
+        run: npm run package

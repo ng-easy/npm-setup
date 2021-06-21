@@ -1,0 +1,62 @@
+{
+  "name": "@ng-easy/npm-setup",
+  "version": "0.0.0",
+  "description": "GitHub Action to automate the installation of npm dependencies for Angular projects",
+  "main": "dist/index.js",
+  "author": "samuelfernandez",
+  "homepage": "https://github.com/ng-easy/npm-setup#readme",
+  "bugs": {
+    "url": "https://github.com/ng-easy/npm-setup/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ng-easy/npm-setup.git"
+  },
+  "engines": {
+    "node": "^14.0.0",
+    "npm": "^7.0.0"
+  },
+  "license": "MIT",
+  "scripts": {
+    "prepare": "husky install",
+    "lint": "eslint .",
+    "start": "tsc --watch",
+    "package": "rimraf dist && tsc && rimraf dist/**/*.spec.js dist/**/*.d.ts && ncc build",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@actions/core": "^1.2.6",
+    "@actions/github": "^5.0.0"
+  },
+  "devDependencies": {
+    "@angular-eslint/eslint-plugin": "^12.2.0",
+    "@angular-eslint/eslint-plugin-template": "^12.2.0",
+    "@angular-eslint/template-parser": "^12.2.0",
+    "@angular/compiler": "^12.0.5",
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
+    "@ng-easy/eslint-config": "^3.1.1",
+    "@types/jest": "^26.0.14",
+    "@typescript-eslint/eslint-plugin": "^4.27.0",
+    "@typescript-eslint/parser": "^4.27.0",
+    "@vercel/ncc": "^0.28.6",
+    "eslint": "^7.29.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-deprecation": "^1.2.1",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-jsdoc": "^35.3.2",
+    "eslint-plugin-json": "^3.0.0",
+    "eslint-plugin-prefer-arrow": "^1.2.3",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-unused-imports": "^1.1.1",
+    "husky": "^6.0.0",
+    "husky-check-email": "0.0.7",
+    "jest": "^27.0.4",
+    "lint-staged": "^11.0.0",
+    "prettier": "^2.3.1",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^27.0.3",
+    "typescript": "^4.0.3"
+  },
+  "private": true
+}
