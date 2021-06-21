@@ -1,4 +1,4 @@
-name: Test CI
+name: '@ng-easy/npm-setup'
 on: workflow_dispatch
 
 jobs:

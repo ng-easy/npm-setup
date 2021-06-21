@@ -9,7 +9,7 @@ on:
 
 jobs:
   ci:
-    name: Build, test and release
+    name: CI
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
