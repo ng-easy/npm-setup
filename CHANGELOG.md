@@ -1,3 +1,16 @@
+# [1.4.0](https://github.com/ng-easy/npm-setup/compare/v1.3.1...v1.4.0) (2021-06-22)
+
+
+### Bug Fixes
+
+* :bug: fix path of .npm cache ([ca577a4](https://github.com/ng-easy/npm-setup/commit/ca577a4b1ada366aea8b0257d9dfa68caaa8bbf8))
+* **deps:** :arrow_up: update all non-major dependencies ([c89d21c](https://github.com/ng-easy/npm-setup/commit/c89d21c97fbcfa64d5ed23f3ae33679b410fdfd3))
+
+
+### Features
+
+* :sparkles: restore and save cache, install when needed ([0d0ded3](https://github.com/ng-easy/npm-setup/commit/0d0ded3b9201f4746c101cc9f37c2bc05ac4e500))
+
 ## [1.3.1](https://github.com/ng-easy/npm-setup/compare/v1.3.0...v1.3.1) (2021-06-21)
 
 
