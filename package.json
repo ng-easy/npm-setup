@@ -20,13 +20,17 @@
     "prepare": "husky install",
     "lint": "eslint .",
     "start": "tsc --watch",
-    "package": "rimraf dist && tsc && rimraf dist/**/*.spec.* && ncc build",
+    "package": "rimraf dist && tsc && rimraf dist/**/*.spec.* && ncc build && rimraf dist/**/*.json",
     "test": "jest",
     "semantic-release": "semantic-release"
   },
   "dependencies": {
+    "@actions/cache": "^1.0.7",
     "@actions/core": "^1.4.0",
-    "@actions/github": "^5.0.0"
+    "@actions/github": "^5.0.0",
+    "fs-extra": "^10.0.0",
+    "hasha": "^5.2.2",
+    "quote": "^0.4.0"
   },
   "devDependencies": {
     "@angular-eslint/eslint-plugin": "^12.2.0",
@@ -38,6 +42,7 @@
     "@ng-easy/eslint-config": "^3.1.1",
     "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/git": "^9.0.0",
+    "@types/fs-extra": "^9.0.11",
     "@types/jest": "^26.0.23",
     "@typescript-eslint/eslint-plugin": "^4.27.0",
     "@typescript-eslint/parser": "^4.27.0",
