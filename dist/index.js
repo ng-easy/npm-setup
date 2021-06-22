@@ -12,6 +12,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.npmSetupAction = void 0;
+const os_1 = __nccwpck_require__(2087);
+const path_1 = __nccwpck_require__(5622);
 const cache_1 = __nccwpck_require__(7799);
 const core_1 = __nccwpck_require__(2186);
 const exec_1 = __nccwpck_require__(1514);
@@ -22,7 +24,8 @@ const quote_1 = __importDefault(__nccwpck_require__(5427));
 const PACKAGE_JSON = 'package.json';
 const PACKAGE_LOCK_JSON = 'package-lock.json';
 const NODE_MODULES = 'node_modules';
-const NPM_CACHE = '.npm';
+const NPM_CACHE = path_1.normalize(path_1.join(os_1.homedir(), '.npm'));
+const CACHE_VERSION = 'v1';
 // TODO: Add platform and arch to cache keys
 async function npmSetupAction() {
     const { packageLockJsonHash, packageJsonHash } = await packageHashes();
@@ -60,7 +63,7 @@ async function restoreNodeModulesCache(packageLockJsonHash) {
     core_1.info(`Trying to restore cache for ${NODE_MODULES}`);
     let cacheHit;
     try {
-        cacheHit = await cache_1.restoreCache([NODE_MODULES], `node-${packageLockJsonHash}`);
+        cacheHit = await cache_1.restoreCache([NODE_MODULES], `node-${CACHE_VERSION}-${packageLockJsonHash}`);
         if (cacheHit) {
             core_1.info(`${NODE_MODULES} cache hit ${cacheHit}`);
             return true;
@@ -75,8 +78,7 @@ async function restoreNodeModulesCache(packageLockJsonHash) {
 async function saveNodeModulesCache(packageLockJsonHash) {
     core_1.info(`Saving cache for ${NODE_MODULES}`);
     try {
-        await cache_1.saveCache([NODE_MODULES], `node-${packageLockJsonHash}`);
-        core_1.info(`Cache for ${NODE_MODULES} saved`);
+        await cache_1.saveCache([NODE_MODULES], `node-${CACHE_VERSION}-${packageLockJsonHash}`);
         return true;
     }
     catch (err) {
@@ -92,12 +94,15 @@ async function saveNodeModulesCache(packageLockJsonHash) {
 async function restoreNpmCache(packageLockJsonHash, packageJsonHash) {
     core_1.info(`Trying to restore cache for ${NPM_CACHE}`);
     // TODO: use rolling cache
-    const restoreKeys = [`npm-${packageJsonHash}-${packageLockJsonHash}`, `npm-${packageJsonHash}`, `npm`];
+    const restoreKeys = [
+        `npm-${CACHE_VERSION}-${packageJsonHash}-${packageLockJsonHash}`,
+        `npm-${CACHE_VERSION}-${packageJsonHash}`,
+        `npm-${CACHE_VERSION}`,
+    ];
     let cacheHit;
     try {
         cacheHit = await cache_1.restoreCache([NPM_CACHE], restoreKeys[0], restoreKeys);
         if (cacheHit) {
-            core_1.info(`${NPM_CACHE} cache hit ${cacheHit}`);
             return true;
         }
     }
@@ -110,8 +115,7 @@ async function restoreNpmCache(packageLockJsonHash, packageJsonHash) {
 async function saveNpmCache(packageLockJsonHash, packageJsonHash) {
     core_1.info(`Saving cache for ${NPM_CACHE}`);
     try {
-        await cache_1.saveCache([NPM_CACHE], `npm-${packageJsonHash}-${packageLockJsonHash}`);
-        core_1.info(`Cache for ${NPM_CACHE} saved`);
+        await cache_1.saveCache([NPM_CACHE], `npm-${CACHE_VERSION}-${packageJsonHash}-${packageLockJsonHash}`);
         return true;
     }
     catch (err) {

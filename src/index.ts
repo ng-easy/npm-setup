@@ -1,3 +1,6 @@
+import { homedir } from 'os';
+import { normalize, join } from 'path';
+
 import { restoreCache, ReserveCacheError, saveCache } from '@actions/cache';
 import { setFailed, error, info, debug, warning } from '@actions/core';
 import { exec } from '@actions/exec';
@@ -9,7 +12,8 @@ import quote from 'quote';
 const PACKAGE_JSON = 'package.json';
 const PACKAGE_LOCK_JSON = 'package-lock.json';
 const NODE_MODULES = 'node_modules';
-const NPM_CACHE = '.npm';
+const NPM_CACHE = normalize(join(homedir(), '.npm'));
+const CACHE_VERSION = 'v1';
 
 interface PackageHashes {
   packageLockJsonHash: string;
@@ -65,7 +69,7 @@ async function restoreNodeModulesCache(packageLockJsonHash: string): Promise<boo
   let cacheHit: string | undefined;
 
   try {
-    cacheHit = await restoreCache([NODE_MODULES], `node-${packageLockJsonHash}`);
+    cacheHit = await restoreCache([NODE_MODULES], `node-${CACHE_VERSION}-${packageLockJsonHash}`);
     if (cacheHit) {
       info(`${NODE_MODULES} cache hit ${cacheHit}`);
       return true;
@@ -82,8 +86,7 @@ async function saveNodeModulesCache(packageLockJsonHash: string): Promise<boolea
   info(`Saving cache for ${NODE_MODULES}`);
 
   try {
-    await saveCache([NODE_MODULES], `node-${packageLockJsonHash}`);
-    info(`Cache for ${NODE_MODULES} saved`);
+    await saveCache([NODE_MODULES], `node-${CACHE_VERSION}-${packageLockJsonHash}`);
     return true;
   } catch (err) {
     if (err instanceof ReserveCacheError) {
@@ -101,13 +104,16 @@ async function restoreNpmCache(packageLockJsonHash: string, packageJsonHash: str
   info(`Trying to restore cache for ${NPM_CACHE}`);
 
   // TODO: use rolling cache
-  const restoreKeys: string[] = [`npm-${packageJsonHash}-${packageLockJsonHash}`, `npm-${packageJsonHash}`, `npm`];
+  const restoreKeys: string[] = [
+    `npm-${CACHE_VERSION}-${packageJsonHash}-${packageLockJsonHash}`,
+    `npm-${CACHE_VERSION}-${packageJsonHash}`,
+    `npm-${CACHE_VERSION}`,
+  ];
   let cacheHit: string | undefined;
 
   try {
     cacheHit = await restoreCache([NPM_CACHE], restoreKeys[0], restoreKeys);
     if (cacheHit) {
-      info(`${NPM_CACHE} cache hit ${cacheHit}`);
       return true;
     }
   } catch (err) {
@@ -122,8 +128,7 @@ async function saveNpmCache(packageLockJsonHash: string, packageJsonHash: string
   info(`Saving cache for ${NPM_CACHE}`);
 
   try {
-    await saveCache([NPM_CACHE], `npm-${packageJsonHash}-${packageLockJsonHash}`);
-    info(`Cache for ${NPM_CACHE} saved`);
+    await saveCache([NPM_CACHE], `npm-${CACHE_VERSION}-${packageJsonHash}-${packageLockJsonHash}`);
     return true;
   } catch (err) {
     if (err instanceof ReserveCacheError) {
