@@ -33,7 +33,7 @@ jobs:
       - name: Update tag with latest major version
         if: steps.semantic.outputs.new_release_published == 'true'
         run: |
-          'git tag v${{steps.semantic.outputs.new_release_major_version}}'
-          'git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git --tags --force'
+          git tag 'v${{steps.semantic.outputs.new_release_major_version}}' --force
+          git push 'https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git' --tags --force
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
