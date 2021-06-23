@@ -1,3 +1,10 @@
+## [1.5.4](https://github.com/ng-easy/npm-setup/compare/v1.5.3...v1.5.4) (2021-06-23)
+
+
+### Bug Fixes
+
+* :green_heart: fix release tag command ([7794adb](https://github.com/ng-easy/npm-setup/commit/7794adbbe2e08d1bf6f5be7e575b4482370021fd))
+
 ## [1.5.3](https://github.com/ng-easy/npm-setup/compare/v1.5.2...v1.5.3) (2021-06-23)
 
 
