@@ -19,6 +19,10 @@ jobs:
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v2
         id: semantic
+        with:
+          extra_plugins: |
+            @semantic-release/changelog
+            @semantic-release/git
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }} # Personal access token with repo permissions
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
