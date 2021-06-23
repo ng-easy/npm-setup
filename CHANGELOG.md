@@ -1,3 +1,10 @@
+## [1.5.3](https://github.com/ng-easy/npm-setup/compare/v1.5.2...v1.5.3) (2021-06-23)
+
+
+### Bug Fixes
+
+* :hammer: update tag with latest major version ([f6aaba7](https://github.com/ng-easy/npm-setup/commit/f6aaba7d14da243cdf0a7e0aa9a0502f5b3340b7))
+
 ## [1.5.2](https://github.com/ng-easy/npm-setup/compare/v1.5.1...v1.5.2) (2021-06-23)
 
 
