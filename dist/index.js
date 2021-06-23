@@ -2,137 +2,28 @@
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 9283:
-/***/ (function(module, exports, __nccwpck_require__) {
+/***/ ((module, exports, __nccwpck_require__) => {
 
 "use strict";
 /* module decorator */ module = __nccwpck_require__.nmd(module);
 
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.npmSetupAction = void 0;
-const os_1 = __nccwpck_require__(2087);
-const path_1 = __nccwpck_require__(5622);
-const cache_1 = __nccwpck_require__(7799);
 const core_1 = __nccwpck_require__(2186);
-const exec_1 = __nccwpck_require__(1514);
-const io_1 = __nccwpck_require__(7436);
-const fs_extra_1 = __nccwpck_require__(5630);
-const hasha_1 = __nccwpck_require__(4933);
-const quote_1 = __importDefault(__nccwpck_require__(5427));
-const PACKAGE_JSON = 'package.json';
-const PACKAGE_LOCK_JSON = 'package-lock.json';
-const NODE_MODULES = 'node_modules';
-const NPM_CACHE = path_1.normalize(path_1.join(os_1.homedir(), '.npm'));
-const CACHE_VERSION = 'v1';
-// TODO: Add platform and arch to cache keys
+const cache_1 = __nccwpck_require__(6847);
+const npm_1 = __nccwpck_require__(4846);
 async function npmSetupAction() {
-    const { packageLockJsonHash, packageJsonHash } = await packageHashes();
-    if (await restoreNodeModulesCache(packageLockJsonHash)) {
+    const nodeModulesCache = await cache_1.getNodeModulesCache();
+    const npmModulesCache = await cache_1.getNpmCache();
+    if (await cache_1.restoreCacheAction(nodeModulesCache)) {
         return;
     }
-    await restoreNpmCache(packageLockJsonHash, packageJsonHash);
-    await install();
-    await saveNodeModulesCache(packageLockJsonHash);
-    await saveNpmCache(packageLockJsonHash, packageJsonHash);
+    await cache_1.restoreCacheAction(npmModulesCache);
+    await npm_1.installDependencies();
+    await cache_1.saveCacheAction(nodeModulesCache);
+    await cache_1.saveCacheAction(npmModulesCache);
 }
 exports.npmSetupAction = npmSetupAction;
-async function packageHashes() {
-    // Calculate hash for package-lock.json
-    if (!(await fs_extra_1.pathExists(PACKAGE_LOCK_JSON))) {
-        throw new Error(`${PACKAGE_LOCK_JSON} doesn't exist`);
-    }
-    const packageLockJsonHash = await hasha_1.fromFile(PACKAGE_LOCK_JSON);
-    if (!packageLockJsonHash) {
-        throw new Error(`Could not compute has from file ${PACKAGE_LOCK_JSON}`);
-    }
-    core_1.debug(`${PACKAGE_LOCK_JSON} hash ${packageLockJsonHash}`);
-    // Calculate hash for package.json
-    if (!(await fs_extra_1.pathExists(PACKAGE_JSON))) {
-        throw new Error(`${PACKAGE_JSON} doesn't exist`);
-    }
-    const packageJsonHash = await hasha_1.fromFile(PACKAGE_JSON);
-    if (!packageJsonHash) {
-        throw new Error(`Could not compute has from file ${PACKAGE_JSON}`);
-    }
-    core_1.debug(`${PACKAGE_JSON} hash ${packageJsonHash}`);
-    return { packageLockJsonHash, packageJsonHash };
-}
-async function restoreNodeModulesCache(packageLockJsonHash) {
-    core_1.info(`Trying to restore cache for ${NODE_MODULES}`);
-    let cacheHit;
-    try {
-        cacheHit = await cache_1.restoreCache([NODE_MODULES], `node-${CACHE_VERSION}-${packageLockJsonHash}`);
-        if (cacheHit) {
-            core_1.info(`${NODE_MODULES} cache hit ${cacheHit}`);
-            return true;
-        }
-    }
-    catch (err) {
-        core_1.error(err.message);
-    }
-    core_1.info(`Cache for ${NODE_MODULES} not found`);
-    return false;
-}
-async function saveNodeModulesCache(packageLockJsonHash) {
-    core_1.info(`Saving cache for ${NODE_MODULES}`);
-    try {
-        await cache_1.saveCache([NODE_MODULES], `node-${CACHE_VERSION}-${packageLockJsonHash}`);
-        return true;
-    }
-    catch (err) {
-        if (err instanceof cache_1.ReserveCacheError) {
-            core_1.warning(err.message);
-            return true;
-        }
-        core_1.error(err.message);
-    }
-    core_1.info(`Cache for ${NODE_MODULES} not found`);
-    return false;
-}
-async function restoreNpmCache(packageLockJsonHash, packageJsonHash) {
-    core_1.info(`Trying to restore cache for ${NPM_CACHE}`);
-    // TODO: use rolling cache
-    const restoreKeys = [
-        `npm-${CACHE_VERSION}-${packageJsonHash}-${packageLockJsonHash}`,
-        `npm-${CACHE_VERSION}-${packageJsonHash}`,
-        `npm-${CACHE_VERSION}`,
-    ];
-    let cacheHit;
-    try {
-        cacheHit = await cache_1.restoreCache([NPM_CACHE], restoreKeys[0], restoreKeys);
-        if (cacheHit) {
-            return true;
-        }
-    }
-    catch (err) {
-        core_1.error(err.message);
-    }
-    core_1.info(`Cache for ${NPM_CACHE} not found`);
-    return false;
-}
-async function saveNpmCache(packageLockJsonHash, packageJsonHash) {
-    core_1.info(`Saving cache for ${NPM_CACHE}`);
-    try {
-        await cache_1.saveCache([NPM_CACHE], `npm-${CACHE_VERSION}-${packageJsonHash}-${packageLockJsonHash}`);
-        return true;
-    }
-    catch (err) {
-        if (err instanceof cache_1.ReserveCacheError) {
-            core_1.warning(err.message);
-            return true;
-        }
-        core_1.error(err.message);
-    }
-    core_1.info(`Cache for ${NPM_CACHE} not found`);
-    return false;
-}
-async function install() {
-    core_1.info(`Installing dependencies with npm ci`);
-    const npmPath = await io_1.which('npm', true);
-    await exec_1.exec(quote_1.default(npmPath), ['ci']);
-}
 if (!module.parent) {
     npmSetupAction()
         .then(() => {
@@ -143,6 +34,159 @@ if (!module.parent) {
         core_1.setFailed(err.message);
     });
 }
+
+
+/***/ }),
+
+/***/ 6847:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getNpmCache = exports.getNodeModulesCache = exports.saveCacheAction = exports.restoreCacheAction = exports.CACHE_VERSION = exports.NPM_CACHE = exports.NODE_MODULES = void 0;
+const os_1 = __nccwpck_require__(2087);
+const path_1 = __nccwpck_require__(5622);
+const cache_1 = __nccwpck_require__(7799);
+const core_1 = __nccwpck_require__(2186);
+const hash_1 = __nccwpck_require__(1488);
+// TODO: Add platform and arch to cache keys
+exports.NODE_MODULES = 'node_modules';
+exports.NPM_CACHE = path_1.normalize(path_1.join(os_1.homedir(), '.npm'));
+exports.CACHE_VERSION = 'v1';
+async function restoreCacheAction(cache) {
+    core_1.info(`Trying to restore cache for ${cache.path}`);
+    let cacheHit;
+    try {
+        cacheHit = await cache_1.restoreCache([cache.path], cache.keys[0], cache.keys);
+        if (cacheHit) {
+            core_1.info(`${cache.path} cache hit ${cacheHit}`);
+            return true;
+        }
+    }
+    catch (err) {
+        core_1.error(err.message);
+    }
+    core_1.info(`Cache for ${cache.path} not found`);
+    return false;
+}
+exports.restoreCacheAction = restoreCacheAction;
+async function saveCacheAction(cache) {
+    core_1.info(`Saving cache for ${cache.path}`);
+    try {
+        await cache_1.saveCache([cache.path], cache.keys[0]);
+        return true;
+    }
+    catch (err) {
+        if (err instanceof cache_1.ReserveCacheError) {
+            core_1.warning(err.message);
+            return true;
+        }
+        core_1.error(err.message);
+    }
+    core_1.info(`Cache for ${cache.path} not found`);
+    return false;
+}
+exports.saveCacheAction = saveCacheAction;
+async function getNodeModulesCache() {
+    const { packageLockJsonHash } = await hash_1.getPackageHashes();
+    return {
+        path: exports.NODE_MODULES,
+        keys: [`node-${exports.CACHE_VERSION}-${packageLockJsonHash}`],
+    };
+}
+exports.getNodeModulesCache = getNodeModulesCache;
+async function getNpmCache() {
+    const { packageJsonHash, packageLockJsonHash } = await hash_1.getPackageHashes();
+    return {
+        path: exports.NPM_CACHE,
+        keys: [
+            `npm-${exports.CACHE_VERSION}-${packageJsonHash}-${packageLockJsonHash}`,
+            `npm-${exports.CACHE_VERSION}-${packageJsonHash}`,
+            `npm-${exports.CACHE_VERSION}`,
+        ],
+    };
+}
+exports.getNpmCache = getNpmCache;
+
+
+/***/ }),
+
+/***/ 1488:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getPackageHashes = void 0;
+const core_1 = __nccwpck_require__(2186);
+const fs_extra_1 = __nccwpck_require__(5630);
+const hasha_1 = __nccwpck_require__(4933);
+const package_json_1 = __nccwpck_require__(6958);
+let cachedPackageHashes = null;
+async function getPackageHashes() {
+    if (cachedPackageHashes != null) {
+        return cachedPackageHashes;
+    }
+    // Calculate hash for package-lock.json
+    if (!(await fs_extra_1.pathExists(package_json_1.PACKAGE_LOCK_JSON))) {
+        throw new Error(`${package_json_1.PACKAGE_LOCK_JSON} doesn't exist`);
+    }
+    const packageLockJsonHash = await hasha_1.fromFile(package_json_1.PACKAGE_LOCK_JSON);
+    if (!packageLockJsonHash) {
+        throw new Error(`Could not compute has from file ${package_json_1.PACKAGE_LOCK_JSON}`);
+    }
+    core_1.debug(`${package_json_1.PACKAGE_LOCK_JSON} hash ${packageLockJsonHash}`);
+    // Calculate hash for package.json
+    if (!(await fs_extra_1.pathExists(package_json_1.PACKAGE_JSON))) {
+        throw new Error(`${package_json_1.PACKAGE_JSON} doesn't exist`);
+    }
+    const packageJsonHash = await hasha_1.fromFile(package_json_1.PACKAGE_JSON);
+    if (!packageJsonHash) {
+        throw new Error(`Could not compute has from file ${package_json_1.PACKAGE_JSON}`);
+    }
+    core_1.debug(`${package_json_1.PACKAGE_JSON} hash ${packageJsonHash}`);
+    cachedPackageHashes = { packageLockJsonHash, packageJsonHash };
+    return cachedPackageHashes;
+}
+exports.getPackageHashes = getPackageHashes;
+
+
+/***/ }),
+
+/***/ 4846:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.installDependencies = void 0;
+const core_1 = __nccwpck_require__(2186);
+const exec_1 = __nccwpck_require__(1514);
+const io_1 = __nccwpck_require__(7436);
+const quote_1 = __importDefault(__nccwpck_require__(5427));
+async function installDependencies() {
+    core_1.info(`Installing dependencies with npm ci`);
+    const npmPath = await io_1.which('npm', true);
+    await exec_1.exec(quote_1.default(npmPath), ['ci']);
+}
+exports.installDependencies = installDependencies;
+
+
+/***/ }),
+
+/***/ 6958:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.PACKAGE_LOCK_JSON = exports.PACKAGE_JSON = void 0;
+exports.PACKAGE_JSON = 'package.json';
+exports.PACKAGE_LOCK_JSON = 'package-lock.json';
 
 
 /***/ }),
