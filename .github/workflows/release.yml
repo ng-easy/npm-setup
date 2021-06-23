@@ -32,8 +32,12 @@ jobs:
 
       - name: Update tag with latest major version
         if: steps.semantic.outputs.new_release_published == 'true'
-        run: |
-          git tag 'v${{steps.semantic.outputs.new_release_major_version}}' --force
-          git push 'https://x-access-token:${{GITHUB_TOKEN}}@github.com/${{GITHUB_REPOSITORY}}.git' --tags --force
+        run: git tag 'v${{steps.semantic.outputs.new_release_major_version}}' --force
+
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.6.0
         env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          branch: ${{ github.ref }}
+          force: true
+          tags: true
+          github_token: ${{ secrets.RELEASE_TOKEN }}
