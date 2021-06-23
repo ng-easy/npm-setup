@@ -1,3 +1,11 @@
+# [1.5.0](https://github.com/ng-easy/npm-setup/compare/v1.4.0...v1.5.0) (2021-06-23)
+
+
+### Features
+
+* :sparkles: add rolling cache ([e0a273d](https://github.com/ng-easy/npm-setup/commit/e0a273ddf810b8b7fe54a31223b6e93efad41efe))
+* :sparkles: consider platform and arch ([ed24e96](https://github.com/ng-easy/npm-setup/commit/ed24e96879f7cc09699261032aa116e5be59e0a4))
+
 # [1.4.0](https://github.com/ng-easy/npm-setup/compare/v1.3.1...v1.4.0) (2021-06-22)
 
 
