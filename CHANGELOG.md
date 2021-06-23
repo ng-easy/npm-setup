@@ -1,3 +1,11 @@
+## [1.5.6](https://github.com/ng-easy/npm-setup/compare/v1.5.5...v1.5.6) (2021-06-23)
+
+
+### Bug Fixes
+
+* :green_heart: fix release workflow by using push action ([b1faf69](https://github.com/ng-easy/npm-setup/commit/b1faf69e3a4be36afc8965b911b7003ecac4b22b))
+* :green_heart: second try to fix push command ([def439b](https://github.com/ng-easy/npm-setup/commit/def439bfc5e23e894af2b7e921a1152727c2b825))
+
 ## [1.5.5](https://github.com/ng-easy/npm-setup/compare/v1.5.4...v1.5.5) (2021-06-23)
 
 
