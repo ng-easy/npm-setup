@@ -1,3 +1,10 @@
+## [1.5.5](https://github.com/ng-easy/npm-setup/compare/v1.5.4...v1.5.5) (2021-06-23)
+
+
+### Bug Fixes
+
+* :green_heart: fix push of tags when releasing ([2907880](https://github.com/ng-easy/npm-setup/commit/290788017b8c10fd79e13d86cf5e3aec3952668f))
+
 ## [1.5.4](https://github.com/ng-easy/npm-setup/compare/v1.5.3...v1.5.4) (2021-06-23)
 
 
