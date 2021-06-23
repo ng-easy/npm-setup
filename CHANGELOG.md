@@ -1,3 +1,10 @@
+## [1.5.2](https://github.com/ng-easy/npm-setup/compare/v1.5.1...v1.5.2) (2021-06-23)
+
+
+### Bug Fixes
+
+* :green_heart: restore installation of dependencies to semantic release ([6637fae](https://github.com/ng-easy/npm-setup/commit/6637faeecc920f46c5fee136da1e87fb6ddc2268))
+
 ## [1.5.1](https://github.com/ng-easy/npm-setup/compare/v1.5.0...v1.5.1) (2021-06-23)
 
 
