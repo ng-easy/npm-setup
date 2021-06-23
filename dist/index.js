@@ -44,7 +44,7 @@ if (!module.parent) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getNpmCache = exports.getNodeModulesCache = exports.saveCacheAction = exports.restoreCacheAction = exports.CACHE_VERSION = exports.NPM_CACHE = exports.NODE_MODULES = void 0;
+exports.getNpmCache = exports.getNodeModulesCache = exports.saveCacheAction = exports.restoreCacheAction = exports.CACHE_VERSION = exports.ROLLING_CACHE_KEY = exports.NPM_CACHE = exports.NODE_MODULES = void 0;
 const os_1 = __nccwpck_require__(2087);
 const path_1 = __nccwpck_require__(5622);
 const cache_1 = __nccwpck_require__(7799);
@@ -53,6 +53,8 @@ const hash_1 = __nccwpck_require__(1488);
 // TODO: Add platform and arch to cache keys
 exports.NODE_MODULES = 'node_modules';
 exports.NPM_CACHE = path_1.normalize(path_1.join(os_1.homedir(), '.npm'));
+const NOW = new Date();
+exports.ROLLING_CACHE_KEY = `${NOW.getFullYear()}-${NOW.getMonth()}`;
 exports.CACHE_VERSION = 'v1';
 async function restoreCacheAction(cache) {
     core_1.info(`Trying to restore cache for ${cache.path}`);
@@ -101,9 +103,9 @@ async function getNpmCache() {
     return {
         path: exports.NPM_CACHE,
         keys: [
-            `npm-${exports.CACHE_VERSION}-${packageJsonHash}-${packageLockJsonHash}`,
-            `npm-${exports.CACHE_VERSION}-${packageJsonHash}`,
-            `npm-${exports.CACHE_VERSION}`,
+            `npm-${exports.CACHE_VERSION}-${exports.ROLLING_CACHE_KEY}-${packageJsonHash}-${packageLockJsonHash}`,
+            `npm-${exports.CACHE_VERSION}-${exports.ROLLING_CACHE_KEY}-${packageJsonHash}`,
+            `npm-${exports.CACHE_VERSION}-${exports.ROLLING_CACHE_KEY}`,
         ],
     };
 }
