@@ -1,7 +1,7 @@
 {
   "name": "@ng-easy/npm-setup",
   "version": "1.5.0",
-  "description": "GitHub Action to automate the installation of npm dependencies for Angular projects",
+  "description": "GitHub Action to automate the installation of npm dependencies for Angular projects and NX workspaces",
   "author": "samuelfernandez",
   "homepage": "https://github.com/ng-easy/npm-setup#readme",
   "bugs": {
