@@ -30,10 +30,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }} # Personal access token with repo permissions
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Push updates to branch for major version
-        # if there is a new version published, let's say v1.2.3
-        # then this step will update branch "v1" to this commit
+      - name: Update tag with latest major version
         if: steps.semantic.outputs.new_release_published == 'true'
-        run: 'git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:refs/heads/v${{steps.semantic.outputs.new_release_major_version}}'
+        run: |
+          'git tag v${{steps.semantic.outputs.new_release_major_version}}'
+          'git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git --tags --force'
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
