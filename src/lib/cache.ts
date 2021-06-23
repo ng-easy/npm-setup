@@ -6,9 +6,9 @@ import { error, info, warning } from '@actions/core';
 
 import { getPackageHashes } from './hash';
 
-// TODO: Add platform and arch to cache keys
 export const NODE_MODULES = 'node_modules';
 export const NPM_CACHE = normalize(join(homedir(), '.npm'));
+export const PLATFORM_ARCH = `${process.platform}-${process.arch}`;
 const NOW = new Date();
 export const ROLLING_CACHE_KEY = `${NOW.getFullYear()}-${NOW.getMonth()}`;
 export const CACHE_VERSION = 'v1';
@@ -60,7 +60,7 @@ export async function getNodeModulesCache(): Promise<Cache> {
 
   return {
     path: NODE_MODULES,
-    keys: [`node-${CACHE_VERSION}-${packageLockJsonHash}`],
+    keys: [`node-${CACHE_VERSION}-${PLATFORM_ARCH}-${packageLockJsonHash}`],
   };
 }
 
@@ -70,9 +70,9 @@ export async function getNpmCache(): Promise<Cache> {
   return {
     path: NPM_CACHE,
     keys: [
-      `npm-${CACHE_VERSION}-${ROLLING_CACHE_KEY}-${packageJsonHash}-${packageLockJsonHash}`,
-      `npm-${CACHE_VERSION}-${ROLLING_CACHE_KEY}-${packageJsonHash}`,
-      `npm-${CACHE_VERSION}-${ROLLING_CACHE_KEY}`,
+      `npm-${CACHE_VERSION}-${PLATFORM_ARCH}-${ROLLING_CACHE_KEY}-${packageJsonHash}-${packageLockJsonHash}`,
+      `npm-${CACHE_VERSION}-${PLATFORM_ARCH}-${ROLLING_CACHE_KEY}-${packageJsonHash}`,
+      `npm-${CACHE_VERSION}-${PLATFORM_ARCH}-${ROLLING_CACHE_KEY}`,
     ],
   };
 }

@@ -1,5 +1,6 @@
 export declare const NODE_MODULES = "node_modules";
 export declare const NPM_CACHE: string;
+export declare const PLATFORM_ARCH: string;
 export declare const ROLLING_CACHE_KEY: string;
 export declare const CACHE_VERSION = "v1";
 export interface Cache {

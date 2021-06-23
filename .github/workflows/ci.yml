@@ -20,28 +20,8 @@ jobs:
         with:
           node-version: 14.x
 
-      - name: Cache node_modules
-        id: cache-node-modules
-        uses: actions/cache@v2.1.6
-        with:
-          path: node_modules
-          key: node-${{ hashFiles('**/package-lock.json') }}
-
-      - name: Cache NPM # Get a cache of packages for clean installs
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        uses: actions/cache@v2.1.6
-        with:
-          path: ~/.npm
-          key: |
-            npm-${{ hashFiles('**/package.json') }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            npm-${{ hashFiles('**/package.json') }}-${{ hashFiles('**/package-lock.json') }}
-            npm-${{ hashFiles('**/package.json') }}
-            npm-
-
-      - name: Install dependencies
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm ci
+      - name: NPM
+        uses: ./
 
       - name: Lint
         run: npm run lint

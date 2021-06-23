@@ -11,10 +11,13 @@ jobs:
         with:
           persist-credentials: false # Needed so that semantic release can use the admin token
 
-      - name: NPM
-        uses: bahmutov/npm-install@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v2.1.5
         with:
-          useRollingCache: true
+          node-version: 14.x
+
+      - name: NPM
+        uses: ./
 
       - name: Semantic Release
         run: npm run semantic-release
