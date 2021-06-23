@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/ng-easy/npm-setup/compare/v1.5.0...v1.5.1) (2021-06-23)
+
+
+### Bug Fixes
+
+* :memo: update readme ([815bf04](https://github.com/ng-easy/npm-setup/commit/815bf04d478c1a3d9931abf898d554c46df7e017))
+
 # [1.5.0](https://github.com/ng-easy/npm-setup/compare/v1.4.0...v1.5.0) (2021-06-23)
 
 
