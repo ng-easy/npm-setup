@@ -1,14 +1,13 @@
-name: 'npm setup'
-description: 'GitHub Action to automate the installation of npm dependencies for Angular projects'
-author: 'Samuel Fernández <https://github.com/samuelfernandez>'
+name: npm setup
+description: GitHub Action to automate the installation of npm dependencies for Angular projects
+author: Samuel Fernández <https://github.com/samuelfernandez>
 inputs:
-  milliseconds:
-    required: true
-    description: 'Number of milliseconds to wait'
-    default: '1000'
+  NX_KEY:
+    required: false
+    description: Caches NX local execution cache instead of relying on NX Cloud, this param is the key to uniquely identify a job that runs a NX script.
 runs:
-  using: 'node12'
-  main: 'dist/main/index.js'
+  using: node12
+  main: dist/main/index.js
 branding:
-  icon: 'package'
-  color: 'green'
+  icon: package
+  color: green

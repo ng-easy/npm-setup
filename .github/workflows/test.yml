@@ -10,3 +10,5 @@ jobs:
 
       - name: '@ng-easy/npm-setup'
         uses: ./
+        with:
+          NX_KEY: 'cache'

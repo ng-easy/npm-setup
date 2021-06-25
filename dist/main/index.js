@@ -62268,7 +62268,7 @@ module.exports = v4;
 
 /***/ }),
 
-/***/ 9208:
+/***/ 3764:
 /***/ ((module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -62290,6 +62290,31 @@ var external_path_ = __nccwpck_require__(5622);
 var lib_cache = __nccwpck_require__(7799);
 // EXTERNAL MODULE: ./node_modules/fs-extra/lib/index.js
 var lib = __nccwpck_require__(5630);
+// EXTERNAL MODULE: ./node_modules/@actions/exec/lib/exec.js
+var exec = __nccwpck_require__(1514);
+// EXTERNAL MODULE: ./node_modules/@actions/io/lib/io.js
+var io = __nccwpck_require__(7436);
+// EXTERNAL MODULE: ./node_modules/quote/quote.js
+var quote = __nccwpck_require__(5427);
+var quote_default = /*#__PURE__*/__nccwpck_require__.n(quote);
+;// CONCATENATED MODULE: ./src/lib/git.ts
+
+
+
+let gitSha = null;
+async function getGitSha() {
+    if (gitSha != null) {
+        return gitSha;
+    }
+    const gitPath = await (0,io.which)('git', true);
+    const shaExecOutput = await (0,exec.getExecOutput)(quote_default()(gitPath), ['rev-parse', 'HEAD']);
+    if (shaExecOutput.exitCode) {
+        throw new Error(`Can't get sha from current commit`);
+    }
+    gitSha = shaExecOutput.stdout.trim();
+    return gitSha;
+}
+
 // EXTERNAL MODULE: ./node_modules/hasha/index.js
 var hasha = __nccwpck_require__(4933);
 ;// CONCATENATED MODULE: ./src/lib/package-json.ts
@@ -62328,7 +62353,19 @@ async function getPackageHashes() {
     return cachedPackageHashes;
 }
 
+;// CONCATENATED MODULE: ./src/lib/nx.ts
+
+const NX_KEY_INPUT = 'NX_KEY';
+function getNxKey() {
+    return (0,core.getInput)(NX_KEY_INPUT, { trimWhitespace: true });
+}
+function ixNxCached() {
+    return !!getNxKey();
+}
+
 ;// CONCATENATED MODULE: ./src/lib/cache.ts
+
+
 
 
 
@@ -62338,6 +62375,7 @@ async function getPackageHashes() {
 const NODE_MODULES = 'node_modules';
 const NPM_CACHE = (0,external_path_.normalize)((0,external_path_.join)((0,external_os_.homedir)(), '.npm'));
 const CYPRESS_CACHE = (0,external_path_.normalize)((0,external_path_.join)((0,external_os_.homedir)(), '.cache', 'Cypress'));
+const NX_CACHE = `${NODE_MODULES}/.cache/nx`;
 const PLATFORM_ARCH = `${process.platform}-${process.arch}`;
 const NOW = new Date();
 const ROLLING_CACHE_KEY = `${NOW.getFullYear()}-${NOW.getMonth()}`;
@@ -62406,14 +62444,18 @@ async function getCypressCache() {
         keys: [`cypress-${CACHE_VERSION}-${PLATFORM_ARCH}-${packageLockJsonHash}`],
     };
 }
+async function getNxCache() {
+    const { packageLockJsonHash } = await getPackageHashes();
+    const gitSha = await getGitSha();
+    return {
+        path: NX_CACHE,
+        keys: [
+            `nx-${getNxKey()}-${PLATFORM_ARCH}-${packageLockJsonHash}-${gitSha}`,
+            `nx-${getNxKey()}-${PLATFORM_ARCH}-${packageLockJsonHash}`,
+        ],
+    };
+}
 
-// EXTERNAL MODULE: ./node_modules/@actions/exec/lib/exec.js
-var exec = __nccwpck_require__(1514);
-// EXTERNAL MODULE: ./node_modules/@actions/io/lib/io.js
-var io = __nccwpck_require__(7436);
-// EXTERNAL MODULE: ./node_modules/quote/quote.js
-var quote = __nccwpck_require__(5427);
-var quote_default = /*#__PURE__*/__nccwpck_require__.n(quote);
 ;// CONCATENATED MODULE: ./src/lib/cypress.ts
 
 
@@ -62461,6 +62503,7 @@ async function npmSetupAction() {
     const nodeModulesCache = await getNodeModulesCache();
     const npmModulesCache = await getNpmCache();
     const cypressCache = await getCypressCache();
+    const nxCache = await getNxCache();
     if (await restoreCacheAction(nodeModulesCache)) {
         if ((await isCypressRequired()) && !(await restoreCacheAction(cypressCache))) {
             await installCypress();
@@ -62475,6 +62518,9 @@ async function npmSetupAction() {
             await saveCacheAction(cypressCache);
         }
     }
+    //if (ixNxCached()) {
+    await restoreCacheAction(nxCache);
+    //}
 }
 if (!module.parent) {
     npmSetupAction()
@@ -62781,7 +62827,7 @@ module.exports = require("zlib");;
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(9208);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(3764);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

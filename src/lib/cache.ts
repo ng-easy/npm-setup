@@ -5,11 +5,14 @@ import { saveCache, ReserveCacheError, restoreCache } from '@actions/cache';
 import { error, info, warning } from '@actions/core';
 import { pathExists } from 'fs-extra';
 
+import { getGitSha } from './git';
 import { getPackageHashes } from './hash';
+import { getNxKey } from './nx';
 
 export const NODE_MODULES = 'node_modules';
 export const NPM_CACHE = normalize(join(homedir(), '.npm'));
 export const CYPRESS_CACHE = normalize(join(homedir(), '.cache', 'Cypress'));
+export const NX_CACHE = `${NODE_MODULES}/.cache/nx`;
 export const PLATFORM_ARCH = `${process.platform}-${process.arch}`;
 const NOW = new Date();
 export const ROLLING_CACHE_KEY = `${NOW.getFullYear()}-${NOW.getMonth()}`;
@@ -91,5 +94,18 @@ export async function getCypressCache(): Promise<Cache> {
   return {
     path: CYPRESS_CACHE,
     keys: [`cypress-${CACHE_VERSION}-${PLATFORM_ARCH}-${packageLockJsonHash}`],
+  };
+}
+
+export async function getNxCache(): Promise<Cache> {
+  const { packageLockJsonHash } = await getPackageHashes();
+  const gitSha: string = await getGitSha();
+
+  return {
+    path: NX_CACHE,
+    keys: [
+      `nx-${getNxKey()}-${PLATFORM_ARCH}-${packageLockJsonHash}-${gitSha}`,
+      `nx-${getNxKey()}-${PLATFORM_ARCH}-${packageLockJsonHash}`,
+    ],
   };
 }

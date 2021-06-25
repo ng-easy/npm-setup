@@ -7,8 +7,9 @@ Opinionated zero-config [GitHub Action](https://github.com/marketplace/actions/n
 It is heavily inspired of [`npm-install`](https://github.com/bahmutov/npm-install), and it might be used for other Node projects as well, as long as this requirements are met:
 
 - Use `npm` as dependency manager, others not supported
-- Have a `package-lock.json` and use `npm ci` for installation
+- Have a `package-lock.json` and run `npm ci` for installation
 - Just use a root `node_modules`
+- Detects if `cypress` is a dependency, if so cache its installation
 
 The approach taken for caching is:
 
