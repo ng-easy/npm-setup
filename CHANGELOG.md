@@ -1,3 +1,11 @@
+# [1.6.0](https://github.com/ng-easy/npm-setup/compare/v1.5.7...v1.6.0) (2021-06-25)
+
+
+### Features
+
+* :sparkles: cache Cypress install files ([a4ca812](https://github.com/ng-easy/npm-setup/commit/a4ca81236c280bc871382154578d8afe8e65e3f6))
+* :sparkles: detect use of cypress ([943bdf4](https://github.com/ng-easy/npm-setup/commit/943bdf440dffd0a6302423106b5c11e249e8605e))
+
 ## [1.5.7](https://github.com/ng-easy/npm-setup/compare/v1.5.6...v1.5.7) (2021-06-23)
 
 
