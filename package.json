@@ -20,7 +20,9 @@
     "prepare": "husky install",
     "lint": "eslint .",
     "start": "tsc --watch",
-    "package": "rimraf dist && tsc && rimraf dist/**/*.spec.* && ncc build && rimraf dist/**/*.json",
+    "clean": "rimraf lib && rimraf dist",
+    "build:tsc": "rimraf build && tsc && rimraf build/**/*.spec.*",
+    "build:ncc": "rimraf dist && ncc build -o dist/main src/main.ts && rimraf dist/main/*/** && rimraf dist/**/*.d.ts",
     "test": "jest",
     "semantic-release": "semantic-release"
   },
@@ -70,9 +72,10 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "dist/index.js",
+  "main": "build/main.js",
+  "types": "build/main.d.ts",
   "files": [
     "action.yml",
-    "dist"
+    "build"
   ]
 }

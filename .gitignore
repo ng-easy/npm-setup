@@ -1,3 +1,7 @@
+# NPM build folder
+
+/build
+
 # Logs
 logs
 *.log

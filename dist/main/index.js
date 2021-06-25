@@ -1,198 +1,6 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 9283:
-/***/ ((module, exports, __nccwpck_require__) => {
-
-"use strict";
-/* module decorator */ module = __nccwpck_require__.nmd(module);
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.npmSetupAction = void 0;
-const core_1 = __nccwpck_require__(2186);
-const cache_1 = __nccwpck_require__(6847);
-const npm_1 = __nccwpck_require__(4846);
-async function npmSetupAction() {
-    const nodeModulesCache = await cache_1.getNodeModulesCache();
-    const npmModulesCache = await cache_1.getNpmCache();
-    if (await cache_1.restoreCacheAction(nodeModulesCache)) {
-        return;
-    }
-    await cache_1.restoreCacheAction(npmModulesCache);
-    await npm_1.installDependencies();
-    await cache_1.saveCacheAction(nodeModulesCache);
-    await cache_1.saveCacheAction(npmModulesCache);
-}
-exports.npmSetupAction = npmSetupAction;
-if (!module.parent) {
-    npmSetupAction()
-        .then(() => {
-        core_1.info('npm dependencies installed successfully');
-    })
-        .catch((err) => {
-        core_1.error(err);
-        core_1.setFailed(err.message);
-    });
-}
-
-
-/***/ }),
-
-/***/ 6847:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getNpmCache = exports.getNodeModulesCache = exports.saveCacheAction = exports.restoreCacheAction = exports.CACHE_VERSION = exports.ROLLING_CACHE_KEY = exports.PLATFORM_ARCH = exports.NPM_CACHE = exports.NODE_MODULES = void 0;
-const os_1 = __nccwpck_require__(2087);
-const path_1 = __nccwpck_require__(5622);
-const cache_1 = __nccwpck_require__(7799);
-const core_1 = __nccwpck_require__(2186);
-const hash_1 = __nccwpck_require__(1488);
-exports.NODE_MODULES = 'node_modules';
-exports.NPM_CACHE = path_1.normalize(path_1.join(os_1.homedir(), '.npm'));
-exports.PLATFORM_ARCH = `${process.platform}-${process.arch}`;
-const NOW = new Date();
-exports.ROLLING_CACHE_KEY = `${NOW.getFullYear()}-${NOW.getMonth()}`;
-exports.CACHE_VERSION = 'v1';
-async function restoreCacheAction(cache) {
-    core_1.info(`Trying to restore cache for ${cache.path}`);
-    let cacheHit;
-    try {
-        cacheHit = await cache_1.restoreCache([cache.path], cache.keys[0], cache.keys);
-        if (cacheHit) {
-            core_1.info(`${cache.path} cache hit ${cacheHit}`);
-            return true;
-        }
-    }
-    catch (err) {
-        core_1.error(err.message);
-    }
-    core_1.info(`Cache for ${cache.path} not found`);
-    return false;
-}
-exports.restoreCacheAction = restoreCacheAction;
-async function saveCacheAction(cache) {
-    core_1.info(`Saving cache for ${cache.path}`);
-    try {
-        await cache_1.saveCache([cache.path], cache.keys[0]);
-        return true;
-    }
-    catch (err) {
-        if (err instanceof cache_1.ReserveCacheError) {
-            core_1.warning(err.message);
-            return true;
-        }
-        core_1.error(err.message);
-    }
-    core_1.info(`Cache for ${cache.path} not found`);
-    return false;
-}
-exports.saveCacheAction = saveCacheAction;
-async function getNodeModulesCache() {
-    const { packageLockJsonHash } = await hash_1.getPackageHashes();
-    return {
-        path: exports.NODE_MODULES,
-        keys: [`node-${exports.CACHE_VERSION}-${exports.PLATFORM_ARCH}-${packageLockJsonHash}`],
-    };
-}
-exports.getNodeModulesCache = getNodeModulesCache;
-async function getNpmCache() {
-    const { packageJsonHash, packageLockJsonHash } = await hash_1.getPackageHashes();
-    return {
-        path: exports.NPM_CACHE,
-        keys: [
-            `npm-${exports.CACHE_VERSION}-${exports.PLATFORM_ARCH}-${exports.ROLLING_CACHE_KEY}-${packageJsonHash}-${packageLockJsonHash}`,
-            `npm-${exports.CACHE_VERSION}-${exports.PLATFORM_ARCH}-${exports.ROLLING_CACHE_KEY}-${packageJsonHash}`,
-            `npm-${exports.CACHE_VERSION}-${exports.PLATFORM_ARCH}-${exports.ROLLING_CACHE_KEY}`,
-        ],
-    };
-}
-exports.getNpmCache = getNpmCache;
-
-
-/***/ }),
-
-/***/ 1488:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getPackageHashes = void 0;
-const core_1 = __nccwpck_require__(2186);
-const fs_extra_1 = __nccwpck_require__(5630);
-const hasha_1 = __nccwpck_require__(4933);
-const package_json_1 = __nccwpck_require__(6958);
-let cachedPackageHashes = null;
-async function getPackageHashes() {
-    if (cachedPackageHashes != null) {
-        return cachedPackageHashes;
-    }
-    // Calculate hash for package-lock.json
-    if (!(await fs_extra_1.pathExists(package_json_1.PACKAGE_LOCK_JSON))) {
-        throw new Error(`${package_json_1.PACKAGE_LOCK_JSON} doesn't exist`);
-    }
-    const packageLockJsonHash = await hasha_1.fromFile(package_json_1.PACKAGE_LOCK_JSON);
-    if (!packageLockJsonHash) {
-        throw new Error(`Could not compute has from file ${package_json_1.PACKAGE_LOCK_JSON}`);
-    }
-    core_1.debug(`${package_json_1.PACKAGE_LOCK_JSON} hash ${packageLockJsonHash}`);
-    // Calculate hash for package.json
-    if (!(await fs_extra_1.pathExists(package_json_1.PACKAGE_JSON))) {
-        throw new Error(`${package_json_1.PACKAGE_JSON} doesn't exist`);
-    }
-    const packageJsonHash = await hasha_1.fromFile(package_json_1.PACKAGE_JSON);
-    if (!packageJsonHash) {
-        throw new Error(`Could not compute has from file ${package_json_1.PACKAGE_JSON}`);
-    }
-    core_1.debug(`${package_json_1.PACKAGE_JSON} hash ${packageJsonHash}`);
-    cachedPackageHashes = { packageLockJsonHash, packageJsonHash };
-    return cachedPackageHashes;
-}
-exports.getPackageHashes = getPackageHashes;
-
-
-/***/ }),
-
-/***/ 4846:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.installDependencies = void 0;
-const core_1 = __nccwpck_require__(2186);
-const exec_1 = __nccwpck_require__(1514);
-const io_1 = __nccwpck_require__(7436);
-const quote_1 = __importDefault(__nccwpck_require__(5427));
-async function installDependencies() {
-    core_1.info(`Installing dependencies with npm ci`);
-    const npmPath = await io_1.which('npm', true);
-    await exec_1.exec(quote_1.default(npmPath), ['ci']);
-}
-exports.installDependencies = installDependencies;
-
-
-/***/ }),
-
-/***/ 6958:
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.PACKAGE_LOCK_JSON = exports.PACKAGE_JSON = void 0;
-exports.PACKAGE_JSON = 'package.json';
-exports.PACKAGE_LOCK_JSON = 'package-lock.json';
-
-
-/***/ }),
-
 /***/ 7799:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -62460,6 +62268,211 @@ module.exports = v4;
 
 /***/ }),
 
+/***/ 9208:
+/***/ ((module, __webpack_exports__, __nccwpck_require__) => {
+
+"use strict";
+// ESM COMPAT FLAG
+__nccwpck_require__.r(__webpack_exports__);
+
+// EXPORTS
+__nccwpck_require__.d(__webpack_exports__, {
+  "npmSetupAction": () => (/* binding */ npmSetupAction)
+});
+
+// EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
+var core = __nccwpck_require__(2186);
+// EXTERNAL MODULE: external "os"
+var external_os_ = __nccwpck_require__(2087);
+// EXTERNAL MODULE: external "path"
+var external_path_ = __nccwpck_require__(5622);
+// EXTERNAL MODULE: ./node_modules/@actions/cache/lib/cache.js
+var lib_cache = __nccwpck_require__(7799);
+// EXTERNAL MODULE: ./node_modules/fs-extra/lib/index.js
+var lib = __nccwpck_require__(5630);
+// EXTERNAL MODULE: ./node_modules/hasha/index.js
+var hasha = __nccwpck_require__(4933);
+;// CONCATENATED MODULE: ./src/lib/package-json.ts
+const PACKAGE_JSON = 'package.json';
+const PACKAGE_LOCK_JSON = 'package-lock.json';
+
+;// CONCATENATED MODULE: ./src/lib/hash.ts
+
+
+
+
+let cachedPackageHashes = null;
+async function getPackageHashes() {
+    if (cachedPackageHashes != null) {
+        return cachedPackageHashes;
+    }
+    // Calculate hash for package-lock.json
+    if (!(await (0,lib.pathExists)(PACKAGE_LOCK_JSON))) {
+        throw new Error(`${PACKAGE_LOCK_JSON} doesn't exist`);
+    }
+    const packageLockJsonHash = await (0,hasha.fromFile)(PACKAGE_LOCK_JSON);
+    if (!packageLockJsonHash) {
+        throw new Error(`Could not compute has from file ${PACKAGE_LOCK_JSON}`);
+    }
+    (0,core.debug)(`${PACKAGE_LOCK_JSON} hash ${packageLockJsonHash}`);
+    // Calculate hash for package.json
+    if (!(await (0,lib.pathExists)(PACKAGE_JSON))) {
+        throw new Error(`${PACKAGE_JSON} doesn't exist`);
+    }
+    const packageJsonHash = await (0,hasha.fromFile)(PACKAGE_JSON);
+    if (!packageJsonHash) {
+        throw new Error(`Could not compute has from file ${PACKAGE_JSON}`);
+    }
+    (0,core.debug)(`${PACKAGE_JSON} hash ${packageJsonHash}`);
+    cachedPackageHashes = { packageLockJsonHash, packageJsonHash };
+    return cachedPackageHashes;
+}
+
+;// CONCATENATED MODULE: ./src/lib/cache.ts
+
+
+
+
+
+
+const NODE_MODULES = 'node_modules';
+const NPM_CACHE = (0,external_path_.normalize)((0,external_path_.join)((0,external_os_.homedir)(), '.npm'));
+const CYPRESS_CACHE = (0,external_path_.normalize)((0,external_path_.join)((0,external_os_.homedir)(), '.cache', 'Cypress'));
+const PLATFORM_ARCH = `${process.platform}-${process.arch}`;
+const NOW = new Date();
+const ROLLING_CACHE_KEY = `${NOW.getFullYear()}-${NOW.getMonth()}`;
+const CACHE_VERSION = 'v1';
+async function restoreCacheAction(cache) {
+    (0,core.info)(`Trying to restore cache for ${cache.path}`);
+    let cacheHit;
+    try {
+        cacheHit = await (0,lib_cache.restoreCache)([cache.path], cache.keys[0], cache.keys);
+        if (cacheHit) {
+            (0,core.info)(`${cache.path} cache hit ${cacheHit}`);
+            return true;
+        }
+    }
+    catch (err) {
+        (0,core.error)(err.message);
+    }
+    (0,core.info)(`Cache for ${cache.path} not found`);
+    return false;
+}
+async function saveCacheAction(cache) {
+    if (await (0,lib.pathExists)(cache.path)) {
+        (0,core.info)(`Saving cache for ${cache.path}`);
+    }
+    else {
+        (0,core.info)(`Skipping cache because path ${cache.path} doesn't exist`);
+    }
+    try {
+        await (0,lib_cache.saveCache)([cache.path], cache.keys[0]);
+        return true;
+    }
+    catch (err) {
+        if (err instanceof lib_cache.ReserveCacheError) {
+            (0,core.warning)(err.message);
+            return true;
+        }
+        (0,core.error)(err.message);
+    }
+    (0,core.info)(`Cache for ${cache.path} not found`);
+    return false;
+}
+async function getNodeModulesCache() {
+    const { packageLockJsonHash } = await getPackageHashes();
+    return {
+        path: NODE_MODULES,
+        keys: [`node-${CACHE_VERSION}-${PLATFORM_ARCH}-${packageLockJsonHash}`],
+    };
+}
+async function getNpmCache() {
+    const { packageJsonHash, packageLockJsonHash } = await getPackageHashes();
+    return {
+        path: NPM_CACHE,
+        keys: [
+            `npm-${CACHE_VERSION}-${PLATFORM_ARCH}-${ROLLING_CACHE_KEY}-${packageJsonHash}-${packageLockJsonHash}`,
+            `npm-${CACHE_VERSION}-${PLATFORM_ARCH}-${ROLLING_CACHE_KEY}-${packageJsonHash}`,
+            `npm-${CACHE_VERSION}-${PLATFORM_ARCH}-${ROLLING_CACHE_KEY}`,
+        ],
+    };
+}
+async function getCypressCache() {
+    const { packageLockJsonHash } = await getPackageHashes();
+    return {
+        path: CYPRESS_CACHE,
+        keys: [`cypress-${CACHE_VERSION}-${PLATFORM_ARCH}-${packageLockJsonHash}`],
+    };
+}
+
+// EXTERNAL MODULE: ./node_modules/@actions/exec/lib/exec.js
+var exec = __nccwpck_require__(1514);
+// EXTERNAL MODULE: ./node_modules/@actions/io/lib/io.js
+var io = __nccwpck_require__(7436);
+// EXTERNAL MODULE: ./node_modules/quote/quote.js
+var quote = __nccwpck_require__(5427);
+var quote_default = /*#__PURE__*/__nccwpck_require__.n(quote);
+;// CONCATENATED MODULE: ./src/lib/cypress.ts
+
+
+
+
+async function installCypress() {
+    (0,core.info)(`Installing Cypress`);
+    const npxPath = await (0,io.which)('npx', true);
+    await (0,exec.exec)(quote_default()(npxPath), ['cypress', 'install']);
+}
+
+;// CONCATENATED MODULE: ./src/lib/npm.ts
+
+
+
+
+async function installDependencies() {
+    (0,core.info)(`Installing dependencies with npm ci`);
+    const npmPath = await (0,io.which)('npm', true);
+    await (0,exec.exec)(quote_default()(npmPath), ['ci']);
+}
+
+;// CONCATENATED MODULE: ./src/main.ts
+/* module decorator */ module = __nccwpck_require__.hmd(module);
+
+
+
+
+async function npmSetupAction() {
+    const nodeModulesCache = await getNodeModulesCache();
+    const npmModulesCache = await getNpmCache();
+    const cypressCache = await getCypressCache();
+    const nodeModulesCacheRestored = await restoreCacheAction(nodeModulesCache);
+    if (nodeModulesCacheRestored) {
+        const cypressCacheRestored = await restoreCacheAction(cypressCache);
+        if (!cypressCacheRestored) {
+            await installCypress();
+        }
+    }
+    else {
+        await restoreCacheAction(npmModulesCache);
+        await installDependencies();
+        await saveCacheAction(nodeModulesCache);
+        await saveCacheAction(npmModulesCache);
+        await saveCacheAction(cypressCache);
+    }
+}
+if (!module.parent) {
+    npmSetupAction()
+        .then(() => {
+        (0,core.info)('npm dependencies installed successfully');
+    })
+        .catch((err) => {
+        (0,core.error)(err);
+        (0,core.setFailed)(err.message);
+    });
+}
+
+
+/***/ }),
+
 /***/ 2877:
 /***/ ((module) => {
 
@@ -62688,12 +62701,58 @@ module.exports = require("zlib");;
 /******/ 	}
 /******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/node module decorator */
+/******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
-/******/ 		__nccwpck_require__.nmd = (module) => {
-/******/ 			module.paths = [];
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__nccwpck_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__nccwpck_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__nccwpck_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__nccwpck_require__.o(definition, key) && !__nccwpck_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/harmony module decorator */
+/******/ 	(() => {
+/******/ 		__nccwpck_require__.hmd = (module) => {
+/******/ 			module = Object.create(module);
 /******/ 			if (!module.children) module.children = [];
+/******/ 			Object.defineProperty(module, 'exports', {
+/******/ 				enumerable: true,
+/******/ 				set: () => {
+/******/ 					throw new Error('ES Modules may not assign module.exports or exports.*, Use ESM export syntax, instead: ' + module.id);
+/******/ 				}
+/******/ 			});
 /******/ 			return module;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__nccwpck_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__nccwpck_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
 /******/ 	})();
 /******/ 	
@@ -62704,7 +62763,7 @@ module.exports = require("zlib");;
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(9283);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(9208);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

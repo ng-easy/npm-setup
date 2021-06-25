@@ -29,5 +29,8 @@ jobs:
       - name: Test
         run: npm run test
 
-      - name: Package
-        run: npm run package
+      - name: Build NPM package
+        run: npm run build:tsc
+
+      - name: Build action
+        run: npm run build:ncc

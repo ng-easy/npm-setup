@@ -3,11 +3,13 @@ import { join, normalize } from 'path';
 
 import { saveCache, ReserveCacheError, restoreCache } from '@actions/cache';
 import { error, info, warning } from '@actions/core';
+import { pathExists } from 'fs-extra';
 
 import { getPackageHashes } from './hash';
 
 export const NODE_MODULES = 'node_modules';
 export const NPM_CACHE = normalize(join(homedir(), '.npm'));
+export const CYPRESS_CACHE = normalize(join(homedir(), '.cache', 'Cypress'));
 export const PLATFORM_ARCH = `${process.platform}-${process.arch}`;
 const NOW = new Date();
 export const ROLLING_CACHE_KEY = `${NOW.getFullYear()}-${NOW.getMonth()}`;
@@ -38,7 +40,11 @@ export async function restoreCacheAction(cache: Cache): Promise<boolean> {
 }
 
 export async function saveCacheAction(cache: Cache): Promise<boolean> {
-  info(`Saving cache for ${cache.path}`);
+  if (await pathExists(cache.path)) {
+    info(`Saving cache for ${cache.path}`);
+  } else {
+    info(`Skipping cache because path ${cache.path} doesn't exist`);
+  }
 
   try {
     await saveCache([cache.path], cache.keys[0]);
@@ -74,5 +80,14 @@ export async function getNpmCache(): Promise<Cache> {
       `npm-${CACHE_VERSION}-${PLATFORM_ARCH}-${ROLLING_CACHE_KEY}-${packageJsonHash}`,
       `npm-${CACHE_VERSION}-${PLATFORM_ARCH}-${ROLLING_CACHE_KEY}`,
     ],
+  };
+}
+
+export async function getCypressCache(): Promise<Cache> {
+  const { packageLockJsonHash } = await getPackageHashes();
+
+  return {
+    path: CYPRESS_CACHE,
+    keys: [`cypress-${CACHE_VERSION}-${PLATFORM_ARCH}-${packageLockJsonHash}`],
   };
 }
