@@ -1,7 +1,7 @@
 import { setFailed, error, info } from '@actions/core';
 
 import { Cache, getCypressCache, getNodeModulesCache, getNpmCache, restoreCacheAction, saveCacheAction } from './lib/cache';
-import { installCypress } from './lib/cypress';
+import { installCypress, isCypressRequired } from './lib/cypress';
 import { installDependencies } from './lib/npm';
 
 export async function npmSetupAction() {
@@ -9,11 +9,8 @@ export async function npmSetupAction() {
   const npmModulesCache: Cache = await getNpmCache();
   const cypressCache: Cache = await getCypressCache();
 
-  const nodeModulesCacheRestored: boolean = await restoreCacheAction(nodeModulesCache);
-
-  if (nodeModulesCacheRestored) {
-    const cypressCacheRestored: boolean = await restoreCacheAction(cypressCache);
-    if (!cypressCacheRestored) {
+  if (await restoreCacheAction(nodeModulesCache)) {
+    if ((await isCypressRequired()) && !(await restoreCacheAction(cypressCache))) {
       await installCypress();
     }
   } else {
@@ -21,14 +18,17 @@ export async function npmSetupAction() {
     await installDependencies();
     await saveCacheAction(nodeModulesCache);
     await saveCacheAction(npmModulesCache);
-    await saveCacheAction(cypressCache);
+    if (await isCypressRequired()) {
+      await saveCacheAction(cypressCache);
+    }
   }
 }
 
 if (!module.parent) {
   npmSetupAction()
     .then(() => {
-      info('npm dependencies installed successfully');
+      info('');
+      info('npm dependencies restored successfully');
     })
     .catch((err) => {
       error(err);

@@ -21,6 +21,7 @@ export interface Cache {
 }
 
 export async function restoreCacheAction(cache: Cache): Promise<boolean> {
+  info('');
   info(`Trying to restore cache for ${cache.path}`);
 
   let cacheHit: string | undefined;
@@ -40,6 +41,7 @@ export async function restoreCacheAction(cache: Cache): Promise<boolean> {
 }
 
 export async function saveCacheAction(cache: Cache): Promise<boolean> {
+  info('');
   if (await pathExists(cache.path)) {
     info(`Saving cache for ${cache.path}`);
   } else {

@@ -62343,6 +62343,7 @@ const NOW = new Date();
 const ROLLING_CACHE_KEY = `${NOW.getFullYear()}-${NOW.getMonth()}`;
 const CACHE_VERSION = 'v1';
 async function restoreCacheAction(cache) {
+    (0,core.info)('');
     (0,core.info)(`Trying to restore cache for ${cache.path}`);
     let cacheHit;
     try {
@@ -62359,6 +62360,7 @@ async function restoreCacheAction(cache) {
     return false;
 }
 async function saveCacheAction(cache) {
+    (0,core.info)('');
     if (await (0,lib.pathExists)(cache.path)) {
         (0,core.info)(`Saving cache for ${cache.path}`);
     }
@@ -62417,10 +62419,25 @@ var quote_default = /*#__PURE__*/__nccwpck_require__.n(quote);
 
 
 
+
+
+const CYPRESS = 'cypress';
+let isRequired = null;
 async function installCypress() {
+    (0,core.info)('');
     (0,core.info)(`Installing Cypress`);
     const npxPath = await (0,io.which)('npx', true);
-    await (0,exec.exec)(quote_default()(npxPath), ['cypress', 'install']);
+    await (0,exec.exec)(quote_default()(npxPath), ['--no-install', CYPRESS, 'install']);
+}
+async function isCypressRequired() {
+    if (isRequired != null) {
+        return isRequired;
+    }
+    const packageJson = JSON.parse((await (0,lib.readFile)(PACKAGE_JSON)).toString());
+    const deps = { ...packageJson.dependencies, ...packageJson.devDependencies };
+    isRequired = deps[CYPRESS] != null;
+    (0,core.info)(isRequired ? `Detected Cypress is used` : `Detected Cypress is not used`);
+    return isRequired;
 }
 
 ;// CONCATENATED MODULE: ./src/lib/npm.ts
@@ -62444,10 +62461,8 @@ async function npmSetupAction() {
     const nodeModulesCache = await getNodeModulesCache();
     const npmModulesCache = await getNpmCache();
     const cypressCache = await getCypressCache();
-    const nodeModulesCacheRestored = await restoreCacheAction(nodeModulesCache);
-    if (nodeModulesCacheRestored) {
-        const cypressCacheRestored = await restoreCacheAction(cypressCache);
-        if (!cypressCacheRestored) {
+    if (await restoreCacheAction(nodeModulesCache)) {
+        if ((await isCypressRequired()) && !(await restoreCacheAction(cypressCache))) {
             await installCypress();
         }
     }
@@ -62456,13 +62471,16 @@ async function npmSetupAction() {
         await installDependencies();
         await saveCacheAction(nodeModulesCache);
         await saveCacheAction(npmModulesCache);
-        await saveCacheAction(cypressCache);
+        if (await isCypressRequired()) {
+            await saveCacheAction(cypressCache);
+        }
     }
 }
 if (!module.parent) {
     npmSetupAction()
         .then(() => {
-        (0,core.info)('npm dependencies installed successfully');
+        (0,core.info)('');
+        (0,core.info)('npm dependencies restored successfully');
     })
         .catch((err) => {
         (0,core.error)(err);
