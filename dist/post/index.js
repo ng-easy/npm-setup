@@ -62268,7 +62268,7 @@ module.exports = v4;
 
 /***/ }),
 
-/***/ 3764:
+/***/ 1005:
 /***/ ((module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -62277,7 +62277,7 @@ __nccwpck_require__.r(__webpack_exports__);
 
 // EXPORTS
 __nccwpck_require__.d(__webpack_exports__, {
-  "npmSetupMainAction": () => (/* binding */ npmSetupMainAction)
+  "npmSetupPostAction": () => (/* binding */ npmSetupPostAction)
 });
 
 // EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
@@ -62327,7 +62327,7 @@ const PACKAGE_LOCK_JSON = 'package-lock.json';
 
 
 let cachedPackageHashes = null;
-async function getPackageHashes() {
+async function hash_getPackageHashes() {
     if (cachedPackageHashes != null) {
         return cachedPackageHashes;
     }
@@ -62381,20 +62381,20 @@ const NOW = new Date();
 const ROLLING_CACHE_KEY = `${NOW.getFullYear()}-${NOW.getMonth()}`;
 const CACHE_VERSION = 'v1';
 async function restoreCacheAction(cache) {
-    (0,core.info)('');
-    (0,core.info)(`Trying to restore cache for ${cache.path}`);
+    info('');
+    info(`Trying to restore cache for ${cache.path}`);
     let cacheHit;
     try {
-        cacheHit = await (0,lib_cache.restoreCache)([cache.path], cache.keys[0], cache.keys);
+        cacheHit = await restoreCache([cache.path], cache.keys[0], cache.keys);
         if (cacheHit) {
-            (0,core.info)(`${cache.path} cache hit ${cacheHit}`);
+            info(`${cache.path} cache hit ${cacheHit}`);
             return true;
         }
     }
     catch (err) {
-        (0,core.error)(err.message);
+        error(err.message);
     }
-    (0,core.info)(`Cache for ${cache.path} not found`);
+    info(`Cache for ${cache.path} not found`);
     return false;
 }
 async function saveCacheAction(cache) {
@@ -62445,7 +62445,7 @@ async function getCypressCache() {
     };
 }
 async function getNxCache() {
-    const { packageLockJsonHash } = await getPackageHashes();
+    const { packageLockJsonHash } = await hash_getPackageHashes();
     const gitSha = await getGitSha();
     return {
         path: NX_CACHE,
@@ -62456,78 +62456,22 @@ async function getNxCache() {
     };
 }
 
-;// CONCATENATED MODULE: ./src/lib/cypress.ts
-
-
-
-
-
-
-const CYPRESS = 'cypress';
-let isRequired = null;
-async function installCypress() {
-    (0,core.info)('');
-    (0,core.info)(`Installing Cypress`);
-    const npxPath = await (0,io.which)('npx', true);
-    await (0,exec.exec)(quote_default()(npxPath), ['--no-install', CYPRESS, 'install']);
-}
-async function isCypressRequired() {
-    if (isRequired != null) {
-        return isRequired;
-    }
-    const packageJson = JSON.parse((await (0,lib.readFile)(PACKAGE_JSON)).toString());
-    const deps = { ...packageJson.dependencies, ...packageJson.devDependencies };
-    isRequired = deps[CYPRESS] != null;
-    (0,core.info)(isRequired ? `Detected Cypress is used` : `Detected Cypress is not used`);
-    return isRequired;
-}
-
-;// CONCATENATED MODULE: ./src/lib/npm.ts
-
-
-
-
-async function installDependencies() {
-    (0,core.info)(`Installing dependencies with npm ci`);
-    const npmPath = await (0,io.which)('npm', true);
-    await (0,exec.exec)(quote_default()(npmPath), ['ci']);
-}
-
-;// CONCATENATED MODULE: ./src/main.ts
+;// CONCATENATED MODULE: ./src/post.ts
 /* module decorator */ module = __nccwpck_require__.hmd(module);
 
 
 
-
-
-async function npmSetupMainAction() {
-    const nodeModulesCache = await getNodeModulesCache();
-    const npmModulesCache = await getNpmCache();
-    const cypressCache = await getCypressCache();
+async function npmSetupPostAction() {
     const nxCache = await getNxCache();
-    if (await restoreCacheAction(nodeModulesCache)) {
-        if ((await isCypressRequired()) && !(await restoreCacheAction(cypressCache))) {
-            await installCypress();
-        }
-    }
-    else {
-        await restoreCacheAction(npmModulesCache);
-        await installDependencies();
-        await saveCacheAction(nodeModulesCache);
-        await saveCacheAction(npmModulesCache);
-        if (await isCypressRequired()) {
-            await saveCacheAction(cypressCache);
-        }
-    }
     if (ixNxCached()) {
-        await restoreCacheAction(nxCache);
+        await saveCacheAction(nxCache);
     }
 }
 if (!module.parent) {
-    npmSetupMainAction()
+    npmSetupPostAction()
         .then(() => {
         (0,core.info)('');
-        (0,core.info)('npm dependencies restored successfully');
+        (0,core.info)('Dependencies cache saved successfully');
     })
         .catch((err) => {
         (0,core.error)(err);
@@ -62828,7 +62772,7 @@ module.exports = require("zlib");;
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(3764);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(1005);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

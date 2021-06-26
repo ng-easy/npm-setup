@@ -2,6 +2,14 @@
   "name": "@ng-easy/npm-setup",
   "version": "1.6.0",
   "description": "GitHub Action to automate the installation of npm dependencies for Angular projects and NX workspaces",
+  "keywords": [
+    "npm",
+    "angular",
+    "cache",
+    "dependencies",
+    "nx",
+    "github-actions"
+  ],
   "author": "samuelfernandez",
   "homepage": "https://github.com/ng-easy/npm-setup#readme",
   "bugs": {
@@ -22,7 +30,9 @@
     "start": "tsc --watch",
     "clean": "rimraf lib && rimraf dist",
     "build:tsc": "rimraf build && tsc && rimraf build/**/*.spec.*",
-    "build:ncc": "rimraf dist && ncc build -o dist/main src/main.ts && rimraf dist/main/*/** && rimraf dist/**/*.d.ts",
+    "build:ncc:main": "ncc build -o dist/main src/main.ts && rimraf dist/main/*/**",
+    "build:ncc:post": "ncc build -o dist/post src/post.ts && rimraf dist/post/*/**",
+    "build:ncc": "rimraf dist && npm run build:ncc:main && npm run build:ncc:post && rimraf dist/**/*.d.ts",
     "test": "jest",
     "semantic-release": "semantic-release"
   },

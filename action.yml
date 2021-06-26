@@ -8,6 +8,8 @@ inputs:
 runs:
   using: node12
   main: dist/main/index.js
+  post-if: success()
+  post: dist/post/index.js
 branding:
   icon: package
   color: green

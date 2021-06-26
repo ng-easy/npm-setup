@@ -104,8 +104,8 @@ export async function getNxCache(): Promise<Cache> {
   return {
     path: NX_CACHE,
     keys: [
-      `nx-${getNxKey()}-${PLATFORM_ARCH}-${packageLockJsonHash}-${gitSha}`,
-      `nx-${getNxKey()}-${PLATFORM_ARCH}-${packageLockJsonHash}`,
+      `nx-${getNxKey()}-${PLATFORM_ARCH}-${ROLLING_CACHE_KEY}-${packageLockJsonHash}-${gitSha}`,
+      `nx-${getNxKey()}-${PLATFORM_ARCH}-${ROLLING_CACHE_KEY}-${packageLockJsonHash}`,
     ],
   };
 }

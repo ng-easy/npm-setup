@@ -4,17 +4,18 @@
 
 Opinionated zero-config [GitHub Action](https://github.com/marketplace/actions/npm-setup) to automate the installation of npm dependencies for [Angular](https://angular.io/) projects and [Nx](https://nx.dev/) workspaces.
 
-It is heavily inspired of [`npm-install`](https://github.com/bahmutov/npm-install), and it might be used for other Node projects as well, as long as this requirements are met:
+It is heavily inspired of [`npm-install` GitHub action](https://github.com/bahmutov/npm-install), and it might be used for other Node projects as well, as long as these requirements are met:
 
 - Use `npm` as dependency manager, others not supported
 - Have a `package-lock.json` and run `npm ci` for installation
 - Just use a root `node_modules`
-- Detects if `cypress` is a dependency, if so cache its installation
 
 The approach taken for caching is:
 
 - Try to restore `node_modules` if there is an exact match for `package-lock.json`
 - If not, restore `~/.npm` based on `package-lock.json` and `package.json`, and use [rolling cache to avoid cache snowball](https://glebbahmutov.com/blog/do-not-let-npm-cache-snowball/)
+- Detects if `cypress` is a dependency, if so caches its installation
+- Caches NX local execution cache instead of relying on NX Cloud if an input is provided, using rolling cache as well
 
 ## Usage
 
@@ -30,4 +31,12 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ng-easy/npm-install@v1
       - run: npm run build
+```
+
+If you want to cache Nx local execution cache then pass `NX_KEY` input:
+
+```yml
+- uses: ng-easy/npm-install@v1
+  with:
+    NX_KEY: build # or any other key you want to use for the cache that uniquely identifies the job in the workflow
 ```
