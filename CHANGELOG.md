@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/ng-easy/npm-setup/compare/v1.7.0...v1.7.1) (2021-06-26)
+
+
+### Bug Fixes
+
+* :recycle: rename nx input ([93839be](https://github.com/ng-easy/npm-setup/commit/93839be66a09d25ddc9e56b555f69959c57c011f))
+
 # [1.7.0](https://github.com/ng-easy/npm-setup/compare/v1.6.0...v1.7.0) (2021-06-26)
 
 
