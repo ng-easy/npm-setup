@@ -62404,6 +62404,7 @@ async function saveCacheAction(cache) {
     }
     else {
         (0,core.info)(`Skipping cache because path ${cache.path} doesn't exist`);
+        return false;
     }
     try {
         await (0,lib_cache.saveCache)([cache.path], cache.keys[0]);

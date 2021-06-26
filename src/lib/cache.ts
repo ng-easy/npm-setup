@@ -49,6 +49,7 @@ export async function saveCacheAction(cache: Cache): Promise<boolean> {
     info(`Saving cache for ${cache.path}`);
   } else {
     info(`Skipping cache because path ${cache.path} doesn't exist`);
+    return false;
   }
 
   try {
