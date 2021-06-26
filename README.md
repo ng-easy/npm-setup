@@ -1,6 +1,6 @@
 # @ng-easy/npm-setup
 
-[![CI](https://github.com/ng-easy/platform/actions/workflows/ci.yml/badge.svg)](https://github.com/ng-easy/npm-setup/actions/workflows/ci.yml) [![npm latest version](https://img.shields.io/npm/v/@ng-easy/npm-setup/latest.svg)](https://www.npmjs.com/package/@ng-easy/eslint-config) ![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)
+[![CI](https://github.com/ng-easy/platform/actions/workflows/ci.yml/badge.svg)](https://github.com/ng-easy/npm-setup/actions/workflows/ci.yml) [![npm latest version](https://img.shields.io/npm/v/@ng-easy/npm-setup/latest.svg)](https://www.npmjs.com/package/@ng-easy/npm-setup) ![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)
 
 Opinionated zero-config [GitHub Action](https://github.com/marketplace/actions/npm-setup) to automate the installation of npm dependencies for [Angular](https://angular.io/) projects and [Nx](https://nx.dev/) workspaces.
 
