@@ -1,3 +1,16 @@
+# [1.7.0](https://github.com/ng-easy/npm-setup/compare/v1.6.0...v1.7.0) (2021-06-26)
+
+
+### Bug Fixes
+
+* :bug: skip saving cache if path doesn't exist ([5069ce1](https://github.com/ng-easy/npm-setup/commit/5069ce1d67add1f80202996aa2eb77fe54f9bc9e))
+
+
+### Features
+
+* :sparkles: add rolling cache to Nx ([6340038](https://github.com/ng-easy/npm-setup/commit/6340038212e38dd69088472e8fe17278c5eb02e2))
+* :sparkles: barebones for NX cache ([026c6f6](https://github.com/ng-easy/npm-setup/commit/026c6f63d233764680f921c83b059fdf6609c776))
+
 # [1.6.0](https://github.com/ng-easy/npm-setup/compare/v1.5.7...v1.6.0) (2021-06-25)
 
 
