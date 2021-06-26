@@ -62355,7 +62355,7 @@ async function getPackageHashes() {
 
 ;// CONCATENATED MODULE: ./src/lib/nx.ts
 
-const NX_KEY_INPUT = 'NX_KEY';
+const NX_KEY_INPUT = 'nx-key';
 function getNxKey() {
     return (0,core.getInput)(NX_KEY_INPUT, { trimWhitespace: true });
 }

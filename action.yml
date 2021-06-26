@@ -2,7 +2,7 @@ name: npm setup
 description: GitHub Action to automate the installation of npm dependencies for Angular projects
 author: Samuel Fernández <https://github.com/samuelfernandez>
 inputs:
-  NX_KEY:
+  nx-key:
     required: false
     description: Caches NX local execution cache instead of relying on NX Cloud, this param is the key to uniquely identify a job that runs a NX script.
 runs:

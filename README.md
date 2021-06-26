@@ -33,10 +33,10 @@ jobs:
       - run: npm run build
 ```
 
-If you want to cache Nx local execution cache then pass `NX_KEY` input:
+If you want to cache Nx local execution cache then pass `nx-key` input:
 
 ```yml
 - uses: ng-easy/npm-install@v1
   with:
-    NX_KEY: build # or any other key you want to use for the cache that uniquely identifies the job in the workflow
+    nx-key: build # or any other key you want to use for the cache that uniquely identifies the job in the workflow
 ```
