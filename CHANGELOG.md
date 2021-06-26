@@ -1,3 +1,10 @@
+## [1.7.2](https://github.com/ng-easy/npm-setup/compare/v1.7.1...v1.7.2) (2021-06-26)
+
+
+### Bug Fixes
+
+* :memo: fix typo in readme ([8f2eea4](https://github.com/ng-easy/npm-setup/commit/8f2eea469dee11f031b8e06c1f03df4f3e46d1f7))
+
 ## [1.7.1](https://github.com/ng-easy/npm-setup/compare/v1.7.0...v1.7.1) (2021-06-26)
 
 
