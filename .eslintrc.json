@@ -1,7 +1,7 @@
 {
   "root": true,
   "extends": "@ng-easy/eslint-config",
-  "ignorePatterns": ["dist/**", "!**/*.json"],
+  "ignorePatterns": ["dist/**", "build/**", "!**/*.json"],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx"],
