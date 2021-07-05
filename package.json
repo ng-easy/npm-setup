@@ -27,6 +27,7 @@
   "scripts": {
     "prepare": "husky install",
     "lint": "eslint .",
+    "format": "prettier . --write && eslint . --fix",
     "start": "tsc --watch",
     "clean": "rimraf lib && rimraf dist",
     "build:tsc": "rimraf build && tsc && rimraf build/**/*.spec.*",
