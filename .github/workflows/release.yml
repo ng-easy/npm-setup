@@ -12,7 +12,7 @@ jobs:
           persist-credentials: false # Needed so that semantic release can use the admin token
 
       - name: Setup Node.js
-        uses: actions/setup-node@v2.1.5
+        uses: actions/setup-node@v2.2.0
         with:
           node-version: 14.x
 
