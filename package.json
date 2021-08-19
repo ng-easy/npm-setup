@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@actions/cache": "^1.0.7",
-    "@actions/core": "^1.4.0",
+    "@actions/core": "^1.5.0",
     "@actions/github": "^5.0.0",
     "fs-extra": "^10.0.0",
     "hasha": "^5.2.2",
@@ -61,7 +61,7 @@
     "@types/jest": "^27.0.1",
     "@typescript-eslint/eslint-plugin": "^4.29.2",
     "@typescript-eslint/parser": "^4.29.2",
-    "@vercel/ncc": "^0.29.1",
+    "@vercel/ncc": "^0.29.2",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-deprecation": "^1.2.1",
