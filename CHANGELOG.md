@@ -1,3 +1,10 @@
+## [1.7.5](https://github.com/ng-easy/npm-setup/compare/v1.7.4...v1.7.5) (2021-11-21)
+
+
+### Bug Fixes
+
+* **deps:** :arrow_up: update all non-major dependencies ([38ef3ac](https://github.com/ng-easy/npm-setup/commit/38ef3acffb6ada7a71ef175d7360e818037c5115))
+
 ## [1.7.4](https://github.com/ng-easy/npm-setup/compare/v1.7.3...v1.7.4) (2021-10-02)
 
 
