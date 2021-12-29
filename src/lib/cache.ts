@@ -35,7 +35,7 @@ export async function restoreCacheAction(cache: Cache): Promise<boolean> {
       info(`${cache.path} cache hit ${cacheHit}`);
       return true;
     }
-  } catch (err) {
+  } catch (err: any) {
     error(err.message);
   }
 
@@ -55,7 +55,7 @@ export async function saveCacheAction(cache: Cache): Promise<boolean> {
   try {
     await saveCache([cache.path], cache.keys[0]);
     return true;
-  } catch (err) {
+  } catch (err: any) {
     if (err instanceof ReserveCacheError) {
       warning(err.message);
       return true;
