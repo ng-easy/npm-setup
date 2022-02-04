@@ -54,7 +54,7 @@
     "@commitlint/cli": "^16.1.0",
     "@commitlint/config-conventional": "^16.0.0",
     "@ng-easy/eslint-config": "^3.2.10",
-    "@ng-easy/prettier-config": "^2.0.10",
+    "@ng-easy/prettier-config": "^3.0.1",
     "@schemastore/package": "0.0.6",
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/git": "^10.0.1",
