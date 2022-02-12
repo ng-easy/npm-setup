@@ -14,8 +14,9 @@ The approach taken for caching is:
 
 - Try to restore `node_modules` if there is an exact match for `package-lock.json`
 - If not, restore `~/.npm` based on `package-lock.json` and `package.json`, and use [rolling cache to avoid cache snowball](https://glebbahmutov.com/blog/do-not-let-npm-cache-snowball/)
-- Detects if `cypress` is a dependency, if so caches its installation
-- Caches NX local execution cache instead of relying on NX Cloud if an input is provided, using rolling cache as well
+- Detects if [Cypress](https://www.cypress.io/) is a dependency, if so caches its installation
+- Detects if [Angular](https://angular.io/) is a dependency, if so caches its build artifacts
+- Caches [Nx](https://nx.dev/) local execution cache instead of relying on Nx Cloud if an input is provided, using rolling cache as well
 
 ## Usage
 
@@ -33,7 +34,7 @@ jobs:
       - run: npm run build
 ```
 
-If you want to cache Nx local execution cache then pass `nx-key` input:
+If you want to cache [Nx](https://nx.dev/) local execution cache then pass `nx-key` input:
 
 ```yml
 - uses: ng-easy/npm-install@v1

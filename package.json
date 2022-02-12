@@ -28,7 +28,7 @@
     "prepare": "husky install",
     "lint": "eslint .",
     "format": "prettier . --write && eslint . --fix",
-    "start": "tsc --watch",
+    "start": "npm run clean && tsc --watch",
     "clean": "rimraf lib && rimraf dist",
     "build:tsc": "rimraf build && tsc && rimraf build/**/*.spec.*",
     "build:ncc:main": "ncc build -o dist/main src/main.ts && rimraf dist/main/*/**",
