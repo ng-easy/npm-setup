@@ -60067,38 +60067,52 @@ module.exports = v4;
 /***/ }),
 
 /***/ 2474:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getAngularConfig = exports.isAngularRequired = exports.ANGULAR_JSON = exports.ANGULAR_CLI = void 0;
 const fs_extra_1 = __nccwpck_require__(5630);
 const package_json_1 = __nccwpck_require__(3788);
 exports.ANGULAR_CLI = '@angular/cli';
 exports.ANGULAR_JSON = 'angular.json';
-async function isAngularRequired() {
-    if (!(await (0, package_json_1.hasNpmDependency)(exports.ANGULAR_CLI))) {
-        return false;
-    }
-    angularConfig = await getAngularConfig();
-    if (!angularConfig) {
-        return false;
-    }
-    const cache = angularConfig.cli?.cache;
-    return (cache?.enabled ?? true) && (cache?.environment === 'ci' || cache?.environment === 'all');
+function isAngularRequired() {
+    var _a, _b;
+    return __awaiter(this, void 0, void 0, function* () {
+        if (!(yield (0, package_json_1.hasNpmDependency)(exports.ANGULAR_CLI))) {
+            return false;
+        }
+        angularConfig = yield getAngularConfig();
+        if (!angularConfig) {
+            return false;
+        }
+        const cache = (_a = angularConfig.cli) === null || _a === void 0 ? void 0 : _a.cache;
+        return ((_b = cache === null || cache === void 0 ? void 0 : cache.enabled) !== null && _b !== void 0 ? _b : true) && ((cache === null || cache === void 0 ? void 0 : cache.environment) === 'ci' || (cache === null || cache === void 0 ? void 0 : cache.environment) === 'all');
+    });
 }
 exports.isAngularRequired = isAngularRequired;
 let angularConfig = undefined;
-async function getAngularConfig() {
-    if (angularConfig !== undefined) {
+function getAngularConfig() {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (angularConfig !== undefined) {
+            return angularConfig;
+        }
+        angularConfig = null;
+        if (yield (0, fs_extra_1.pathExists)(exports.ANGULAR_JSON)) {
+            angularConfig = JSON.parse((yield (0, fs_extra_1.readFile)(exports.ANGULAR_JSON)).toString());
+        }
         return angularConfig;
-    }
-    angularConfig = null;
-    if (await (0, fs_extra_1.pathExists)(exports.ANGULAR_JSON)) {
-        angularConfig = JSON.parse((await (0, fs_extra_1.readFile)(exports.ANGULAR_JSON)).toString());
-    }
-    return angularConfig;
+    });
 }
 exports.getAngularConfig = getAngularConfig;
 
@@ -60106,10 +60120,19 @@ exports.getAngularConfig = getAngularConfig;
 /***/ }),
 
 /***/ 3310:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getAngularCache = exports.getNxCache = exports.getCypressCache = exports.getNpmCache = exports.getNodeModulesCache = exports.saveCacheAction = exports.restoreCacheAction = exports.CACHE_VERSION = exports.ROLLING_CACHE_KEY = exports.PLATFORM_ARCH = exports.ANGULAR_CACHE = exports.NX_CACHE = exports.CYPRESS_CACHE = exports.NPM_CACHE = exports.NODE_MODULES = void 0;
 const os_1 = __nccwpck_require__(2037);
@@ -60130,95 +60153,110 @@ exports.PLATFORM_ARCH = `${process.platform}-${process.arch}`;
 const NOW = new Date();
 exports.ROLLING_CACHE_KEY = `${NOW.getFullYear()}-${NOW.getMonth()}`;
 exports.CACHE_VERSION = 'v1';
-async function restoreCacheAction(cache) {
-    (0, core_1.info)('');
-    (0, core_1.info)(`Trying to restore cache for ${cache.path}`);
-    let cacheHit;
-    try {
-        cacheHit = await (0, cache_1.restoreCache)([cache.path], cache.keys[0], cache.keys);
-        if (cacheHit) {
-            (0, core_1.info)(`${cache.path} cache hit ${cacheHit}`);
-            return true;
+function restoreCacheAction(cache) {
+    return __awaiter(this, void 0, void 0, function* () {
+        (0, core_1.info)('');
+        (0, core_1.info)(`Trying to restore cache for ${cache.path}`);
+        let cacheHit;
+        try {
+            cacheHit = yield (0, cache_1.restoreCache)([cache.path], cache.keys[0], cache.keys);
+            if (cacheHit) {
+                (0, core_1.info)(`${cache.path} cache hit ${cacheHit}`);
+                return true;
+            }
         }
-    }
-    catch (err) {
-        (0, core_1.error)(err.message);
-    }
-    (0, core_1.info)(`Cache for ${cache.path} not found`);
-    return false;
+        catch (err) {
+            (0, core_1.error)(err.message);
+        }
+        (0, core_1.info)(`Cache for ${cache.path} not found`);
+        return false;
+    });
 }
 exports.restoreCacheAction = restoreCacheAction;
-async function saveCacheAction(cache) {
-    (0, core_1.info)('');
-    if (await (0, fs_extra_1.pathExists)(cache.path)) {
-        (0, core_1.info)(`Saving cache for ${cache.path}`);
-    }
-    else {
-        (0, core_1.info)(`Skipping cache because path ${cache.path} doesn't exist`);
-        return false;
-    }
-    try {
-        await (0, cache_1.saveCache)([cache.path], cache.keys[0]);
-        return true;
-    }
-    catch (err) {
-        if (err instanceof cache_1.ReserveCacheError) {
-            (0, core_1.warning)(err.message);
+function saveCacheAction(cache) {
+    return __awaiter(this, void 0, void 0, function* () {
+        (0, core_1.info)('');
+        if (yield (0, fs_extra_1.pathExists)(cache.path)) {
+            (0, core_1.info)(`Saving cache for ${cache.path}`);
+        }
+        else {
+            (0, core_1.info)(`Skipping cache because path ${cache.path} doesn't exist`);
+            return false;
+        }
+        try {
+            yield (0, cache_1.saveCache)([cache.path], cache.keys[0]);
             return true;
         }
-        (0, core_1.error)(err.message);
-    }
-    (0, core_1.info)(`Cache for ${cache.path} not found`);
-    return false;
+        catch (err) {
+            if (err instanceof cache_1.ReserveCacheError) {
+                (0, core_1.warning)(err.message);
+                return true;
+            }
+            (0, core_1.error)(err.message);
+        }
+        (0, core_1.info)(`Cache for ${cache.path} not found`);
+        return false;
+    });
 }
 exports.saveCacheAction = saveCacheAction;
-async function getNodeModulesCache() {
-    const { packageLockJsonHash } = await (0, hash_1.getPackageHashes)();
-    return {
-        path: exports.NODE_MODULES,
-        keys: [`node-${exports.CACHE_VERSION}-${exports.PLATFORM_ARCH}-${packageLockJsonHash}`],
-    };
+function getNodeModulesCache() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { packageLockJsonHash } = yield (0, hash_1.getPackageHashes)();
+        return {
+            path: exports.NODE_MODULES,
+            keys: [`node-${exports.CACHE_VERSION}-${exports.PLATFORM_ARCH}-${packageLockJsonHash}`],
+        };
+    });
 }
 exports.getNodeModulesCache = getNodeModulesCache;
-async function getNpmCache() {
-    const { packageJsonHash, packageLockJsonHash } = await (0, hash_1.getPackageHashes)();
-    return {
-        path: exports.NPM_CACHE,
-        keys: [
-            `npm-${exports.CACHE_VERSION}-${exports.PLATFORM_ARCH}-${exports.ROLLING_CACHE_KEY}-${packageJsonHash}-${packageLockJsonHash}`,
-            `npm-${exports.CACHE_VERSION}-${exports.PLATFORM_ARCH}-${exports.ROLLING_CACHE_KEY}-${packageJsonHash}`,
-            `npm-${exports.CACHE_VERSION}-${exports.PLATFORM_ARCH}-${exports.ROLLING_CACHE_KEY}`,
-        ],
-    };
+function getNpmCache() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { packageJsonHash, packageLockJsonHash } = yield (0, hash_1.getPackageHashes)();
+        return {
+            path: exports.NPM_CACHE,
+            keys: [
+                `npm-${exports.CACHE_VERSION}-${exports.PLATFORM_ARCH}-${exports.ROLLING_CACHE_KEY}-${packageJsonHash}-${packageLockJsonHash}`,
+                `npm-${exports.CACHE_VERSION}-${exports.PLATFORM_ARCH}-${exports.ROLLING_CACHE_KEY}-${packageJsonHash}`,
+                `npm-${exports.CACHE_VERSION}-${exports.PLATFORM_ARCH}-${exports.ROLLING_CACHE_KEY}`,
+            ],
+        };
+    });
 }
 exports.getNpmCache = getNpmCache;
-async function getCypressCache() {
-    const { packageLockJsonHash } = await (0, hash_1.getPackageHashes)();
-    return {
-        path: exports.CYPRESS_CACHE,
-        keys: [`cypress-${exports.CACHE_VERSION}-${exports.PLATFORM_ARCH}-${packageLockJsonHash}`],
-    };
+function getCypressCache() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { packageLockJsonHash } = yield (0, hash_1.getPackageHashes)();
+        return {
+            path: exports.CYPRESS_CACHE,
+            keys: [`cypress-${exports.CACHE_VERSION}-${exports.PLATFORM_ARCH}-${packageLockJsonHash}`],
+        };
+    });
 }
 exports.getCypressCache = getCypressCache;
-async function getNxCache() {
-    const { packageLockJsonHash } = await (0, hash_1.getPackageHashes)();
-    const gitSha = await (0, git_1.getGitSha)();
-    return {
-        path: exports.NX_CACHE,
-        keys: [
-            `nx-${(0, nx_1.getNxKey)()}-${exports.PLATFORM_ARCH}-${exports.ROLLING_CACHE_KEY}-${packageLockJsonHash}-${gitSha}`,
-            `nx-${(0, nx_1.getNxKey)()}-${exports.PLATFORM_ARCH}-${exports.ROLLING_CACHE_KEY}-${packageLockJsonHash}`,
-        ],
-    };
+function getNxCache() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { packageLockJsonHash } = yield (0, hash_1.getPackageHashes)();
+        const gitSha = yield (0, git_1.getGitSha)();
+        return {
+            path: exports.NX_CACHE,
+            keys: [
+                `nx-${(0, nx_1.getNxKey)()}-${exports.PLATFORM_ARCH}-${exports.ROLLING_CACHE_KEY}-${packageLockJsonHash}-${gitSha}`,
+                `nx-${(0, nx_1.getNxKey)()}-${exports.PLATFORM_ARCH}-${exports.ROLLING_CACHE_KEY}-${packageLockJsonHash}`,
+            ],
+        };
+    });
 }
 exports.getNxCache = getNxCache;
-async function getAngularCache() {
-    const { packageLockJsonHash } = await (0, hash_1.getPackageHashes)();
-    const angularConfig = await (0, angular_1.getAngularConfig)();
-    return {
-        path: angularConfig?.cli?.cache?.path ?? exports.ANGULAR_CACHE,
-        keys: [`angular-${exports.CACHE_VERSION}-${exports.PLATFORM_ARCH}-${packageLockJsonHash}`],
-    };
+function getAngularCache() {
+    var _a, _b, _c;
+    return __awaiter(this, void 0, void 0, function* () {
+        const { packageLockJsonHash } = yield (0, hash_1.getPackageHashes)();
+        const angularConfig = yield (0, angular_1.getAngularConfig)();
+        return {
+            path: (_c = (_b = (_a = angularConfig === null || angularConfig === void 0 ? void 0 : angularConfig.cli) === null || _a === void 0 ? void 0 : _a.cache) === null || _b === void 0 ? void 0 : _b.path) !== null && _c !== void 0 ? _c : exports.ANGULAR_CACHE,
+            keys: [`angular-${exports.CACHE_VERSION}-${exports.PLATFORM_ARCH}-${packageLockJsonHash}`],
+        };
+    });
 }
 exports.getAngularCache = getAngularCache;
 
@@ -60230,6 +60268,15 @@ exports.getAngularCache = getAngularCache;
 
 "use strict";
 
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -60241,15 +60288,19 @@ const io_1 = __nccwpck_require__(7436);
 const quote_1 = __importDefault(__nccwpck_require__(5427));
 const package_json_1 = __nccwpck_require__(3788);
 exports.CYPRESS = 'cypress';
-async function installCypress() {
-    (0, core_1.info)('');
-    (0, core_1.info)(`Installing Cypress`);
-    const npxPath = await (0, io_1.which)('npx', true);
-    await (0, exec_1.exec)((0, quote_1.default)(npxPath), ['--no-install', exports.CYPRESS, 'install']);
+function installCypress() {
+    return __awaiter(this, void 0, void 0, function* () {
+        (0, core_1.info)('');
+        (0, core_1.info)(`Installing Cypress`);
+        const npxPath = yield (0, io_1.which)('npx', true);
+        yield (0, exec_1.exec)((0, quote_1.default)(npxPath), ['--no-install', exports.CYPRESS, 'install']);
+    });
 }
 exports.installCypress = installCypress;
-async function isCypressRequired() {
-    return await (0, package_json_1.hasNpmDependency)(exports.CYPRESS);
+function isCypressRequired() {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield (0, package_json_1.hasNpmDependency)(exports.CYPRESS);
+    });
 }
 exports.isCypressRequired = isCypressRequired;
 
@@ -60261,6 +60312,15 @@ exports.isCypressRequired = isCypressRequired;
 
 "use strict";
 
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -60270,17 +60330,19 @@ const exec_1 = __nccwpck_require__(1514);
 const io_1 = __nccwpck_require__(7436);
 const quote_1 = __importDefault(__nccwpck_require__(5427));
 let gitSha = null;
-async function getGitSha() {
-    if (gitSha != null) {
+function getGitSha() {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (gitSha != null) {
+            return gitSha;
+        }
+        const gitPath = yield (0, io_1.which)('git', true);
+        const shaExecOutput = yield (0, exec_1.getExecOutput)((0, quote_1.default)(gitPath), ['rev-parse', 'HEAD']);
+        if (shaExecOutput.exitCode) {
+            throw new Error(`Can't get sha from current commit`);
+        }
+        gitSha = shaExecOutput.stdout.trim();
         return gitSha;
-    }
-    const gitPath = await (0, io_1.which)('git', true);
-    const shaExecOutput = await (0, exec_1.getExecOutput)((0, quote_1.default)(gitPath), ['rev-parse', 'HEAD']);
-    if (shaExecOutput.exitCode) {
-        throw new Error(`Can't get sha from current commit`);
-    }
-    gitSha = shaExecOutput.stdout.trim();
-    return gitSha;
+    });
 }
 exports.getGitSha = getGitSha;
 
@@ -60288,10 +60350,19 @@ exports.getGitSha = getGitSha;
 /***/ }),
 
 /***/ 9279:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getPackageHashes = void 0;
 const core_1 = __nccwpck_require__(2186);
@@ -60299,30 +60370,32 @@ const fs_extra_1 = __nccwpck_require__(5630);
 const hasha_1 = __nccwpck_require__(4933);
 const package_json_1 = __nccwpck_require__(3788);
 let cachedPackageHashes = null;
-async function getPackageHashes() {
-    if (cachedPackageHashes != null) {
+function getPackageHashes() {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (cachedPackageHashes != null) {
+            return cachedPackageHashes;
+        }
+        // Calculate hash for package-lock.json
+        if (!(yield (0, fs_extra_1.pathExists)(package_json_1.PACKAGE_LOCK_JSON))) {
+            throw new Error(`${package_json_1.PACKAGE_LOCK_JSON} doesn't exist`);
+        }
+        const packageLockJsonHash = yield (0, hasha_1.fromFile)(package_json_1.PACKAGE_LOCK_JSON);
+        if (!packageLockJsonHash) {
+            throw new Error(`Could not compute has from file ${package_json_1.PACKAGE_LOCK_JSON}`);
+        }
+        (0, core_1.debug)(`${package_json_1.PACKAGE_LOCK_JSON} hash ${packageLockJsonHash}`);
+        // Calculate hash for package.json
+        if (!(yield (0, fs_extra_1.pathExists)(package_json_1.PACKAGE_JSON))) {
+            throw new Error(`${package_json_1.PACKAGE_JSON} doesn't exist`);
+        }
+        const packageJsonHash = yield (0, hasha_1.fromFile)(package_json_1.PACKAGE_JSON);
+        if (!packageJsonHash) {
+            throw new Error(`Could not compute has from file ${package_json_1.PACKAGE_JSON}`);
+        }
+        (0, core_1.debug)(`${package_json_1.PACKAGE_JSON} hash ${packageJsonHash}`);
+        cachedPackageHashes = { packageLockJsonHash, packageJsonHash };
         return cachedPackageHashes;
-    }
-    // Calculate hash for package-lock.json
-    if (!(await (0, fs_extra_1.pathExists)(package_json_1.PACKAGE_LOCK_JSON))) {
-        throw new Error(`${package_json_1.PACKAGE_LOCK_JSON} doesn't exist`);
-    }
-    const packageLockJsonHash = await (0, hasha_1.fromFile)(package_json_1.PACKAGE_LOCK_JSON);
-    if (!packageLockJsonHash) {
-        throw new Error(`Could not compute has from file ${package_json_1.PACKAGE_LOCK_JSON}`);
-    }
-    (0, core_1.debug)(`${package_json_1.PACKAGE_LOCK_JSON} hash ${packageLockJsonHash}`);
-    // Calculate hash for package.json
-    if (!(await (0, fs_extra_1.pathExists)(package_json_1.PACKAGE_JSON))) {
-        throw new Error(`${package_json_1.PACKAGE_JSON} doesn't exist`);
-    }
-    const packageJsonHash = await (0, hasha_1.fromFile)(package_json_1.PACKAGE_JSON);
-    if (!packageJsonHash) {
-        throw new Error(`Could not compute has from file ${package_json_1.PACKAGE_JSON}`);
-    }
-    (0, core_1.debug)(`${package_json_1.PACKAGE_JSON} hash ${packageJsonHash}`);
-    cachedPackageHashes = { packageLockJsonHash, packageJsonHash };
-    return cachedPackageHashes;
+    });
 }
 exports.getPackageHashes = getPackageHashes;
 
@@ -60334,6 +60407,15 @@ exports.getPackageHashes = getPackageHashes;
 
 "use strict";
 
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -60343,10 +60425,12 @@ const core_1 = __nccwpck_require__(2186);
 const exec_1 = __nccwpck_require__(1514);
 const io_1 = __nccwpck_require__(7436);
 const quote_1 = __importDefault(__nccwpck_require__(5427));
-async function installDependencies() {
-    (0, core_1.info)(`Installing dependencies with npm ci`);
-    const npmPath = await (0, io_1.which)('npm', true);
-    await (0, exec_1.exec)((0, quote_1.default)(npmPath), ['ci']);
+function installDependencies() {
+    return __awaiter(this, void 0, void 0, function* () {
+        (0, core_1.info)(`Installing dependencies with npm ci`);
+        const npmPath = yield (0, io_1.which)('npm', true);
+        yield (0, exec_1.exec)((0, quote_1.default)(npmPath), ['ci']);
+    });
 }
 exports.installDependencies = installDependencies;
 
@@ -60375,10 +60459,19 @@ exports.ixNxCached = ixNxCached;
 /***/ }),
 
 /***/ 3788:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.hasNpmDependency = exports.PACKAGE_LOCK_JSON = exports.PACKAGE_JSON = void 0;
 const core_1 = __nccwpck_require__(2186);
@@ -60386,15 +60479,17 @@ const fs_extra_1 = __nccwpck_require__(5630);
 exports.PACKAGE_JSON = 'package.json';
 exports.PACKAGE_LOCK_JSON = 'package-lock.json';
 let npmDependencies = null;
-async function hasNpmDependency(name) {
-    if (npmDependencies != null) {
-        return npmDependencies[name] != null;
-    }
-    const packageJson = JSON.parse((await (0, fs_extra_1.readFile)(exports.PACKAGE_JSON)).toString());
-    npmDependencies = { ...packageJson.dependencies, ...packageJson.devDependencies };
-    const hasDependency = npmDependencies[name] != null;
-    (0, core_1.info)(hasDependency ? `Detected ${name} is a dependency` : `Detected ${name} is not a dependency`);
-    return hasDependency;
+function hasNpmDependency(name) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (npmDependencies != null) {
+            return npmDependencies[name] != null;
+        }
+        const packageJson = JSON.parse((yield (0, fs_extra_1.readFile)(exports.PACKAGE_JSON)).toString());
+        npmDependencies = Object.assign(Object.assign({}, packageJson.dependencies), packageJson.devDependencies);
+        const hasDependency = npmDependencies[name] != null;
+        (0, core_1.info)(hasDependency ? `Detected ${name} is a dependency` : `Detected ${name} is not a dependency`);
+        return hasDependency;
+    });
 }
 exports.hasNpmDependency = hasNpmDependency;
 
@@ -60402,11 +60497,20 @@ exports.hasNpmDependency = hasNpmDependency;
 /***/ }),
 
 /***/ 399:
-/***/ ((module, exports, __nccwpck_require__) => {
+/***/ (function(module, exports, __nccwpck_require__) {
 
 "use strict";
 /* module decorator */ module = __nccwpck_require__.nmd(module);
 
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.npmSetupMainAction = void 0;
 const core_1 = __nccwpck_require__(2186);
@@ -60415,32 +60519,34 @@ const cache_1 = __nccwpck_require__(3310);
 const cypress_1 = __nccwpck_require__(9501);
 const npm_1 = __nccwpck_require__(2247);
 const nx_1 = __nccwpck_require__(9928);
-async function npmSetupMainAction() {
-    const nodeModulesCache = await (0, cache_1.getNodeModulesCache)();
-    const npmModulesCache = await (0, cache_1.getNpmCache)();
-    const cypressCache = await (0, cache_1.getCypressCache)();
-    const nxCache = await (0, cache_1.getNxCache)();
-    const angularCache = await (0, cache_1.getAngularCache)();
-    if (await (0, cache_1.restoreCacheAction)(nodeModulesCache)) {
-        if ((await (0, cypress_1.isCypressRequired)()) && !(await (0, cache_1.restoreCacheAction)(cypressCache))) {
-            await (0, cypress_1.installCypress)();
+function npmSetupMainAction() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const nodeModulesCache = yield (0, cache_1.getNodeModulesCache)();
+        const npmModulesCache = yield (0, cache_1.getNpmCache)();
+        const cypressCache = yield (0, cache_1.getCypressCache)();
+        const nxCache = yield (0, cache_1.getNxCache)();
+        const angularCache = yield (0, cache_1.getAngularCache)();
+        if (yield (0, cache_1.restoreCacheAction)(nodeModulesCache)) {
+            if ((yield (0, cypress_1.isCypressRequired)()) && !(yield (0, cache_1.restoreCacheAction)(cypressCache))) {
+                yield (0, cypress_1.installCypress)();
+            }
         }
-    }
-    else {
-        await (0, cache_1.restoreCacheAction)(npmModulesCache);
-        await (0, npm_1.installDependencies)();
-        await (0, cache_1.saveCacheAction)(nodeModulesCache);
-        await (0, cache_1.saveCacheAction)(npmModulesCache);
-        if (await (0, cypress_1.isCypressRequired)()) {
-            await (0, cache_1.saveCacheAction)(cypressCache);
+        else {
+            yield (0, cache_1.restoreCacheAction)(npmModulesCache);
+            yield (0, npm_1.installDependencies)();
+            yield (0, cache_1.saveCacheAction)(nodeModulesCache);
+            yield (0, cache_1.saveCacheAction)(npmModulesCache);
+            if (yield (0, cypress_1.isCypressRequired)()) {
+                yield (0, cache_1.saveCacheAction)(cypressCache);
+            }
         }
-    }
-    if ((0, nx_1.ixNxCached)()) {
-        await (0, cache_1.restoreCacheAction)(nxCache);
-    }
-    if (await (0, angular_1.isAngularRequired)()) {
-        await (0, cache_1.restoreCacheAction)(angularCache);
-    }
+        if ((0, nx_1.ixNxCached)()) {
+            yield (0, cache_1.restoreCacheAction)(nxCache);
+        }
+        if (yield (0, angular_1.isAngularRequired)()) {
+            yield (0, cache_1.restoreCacheAction)(angularCache);
+        }
+    });
 }
 exports.npmSetupMainAction = npmSetupMainAction;
 if (!module.parent) {
