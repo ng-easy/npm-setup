@@ -1,13 +1,19 @@
 import { setFailed, error, info } from '@actions/core';
 
-import { Cache, getNxCache, saveCacheAction } from './lib/cache';
+import { isAngularRequired } from './lib/angular';
+import { Cache, getAngularCache, getNxCache, saveCacheAction } from './lib/cache';
 import { ixNxCached } from './lib/nx';
 
 export async function npmSetupPostAction() {
   const nxCache: Cache = await getNxCache();
+  const angularCache: Cache = await getAngularCache();
 
   if (ixNxCached()) {
     await saveCacheAction(nxCache);
+  }
+
+  if (await isAngularRequired()) {
+    await saveCacheAction(angularCache);
   }
 }
 

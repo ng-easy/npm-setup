@@ -5,6 +5,7 @@ import { saveCache, ReserveCacheError, restoreCache } from '@actions/cache';
 import { error, info, warning } from '@actions/core';
 import { pathExists } from 'fs-extra';
 
+import { getAngularConfig } from './angular';
 import { getGitSha } from './git';
 import { getPackageHashes } from './hash';
 import { getNxKey } from './nx';
@@ -13,6 +14,7 @@ export const NODE_MODULES = 'node_modules';
 export const NPM_CACHE = normalize(join(homedir(), '.npm'));
 export const CYPRESS_CACHE = normalize(join(homedir(), '.cache', 'Cypress'));
 export const NX_CACHE = `${NODE_MODULES}/.cache/nx`;
+export const ANGULAR_CACHE = '.angular/cache';
 export const PLATFORM_ARCH = `${process.platform}-${process.arch}`;
 const NOW = new Date();
 export const ROLLING_CACHE_KEY = `${NOW.getFullYear()}-${NOW.getMonth()}`;
@@ -108,5 +110,15 @@ export async function getNxCache(): Promise<Cache> {
       `nx-${getNxKey()}-${PLATFORM_ARCH}-${ROLLING_CACHE_KEY}-${packageLockJsonHash}-${gitSha}`,
       `nx-${getNxKey()}-${PLATFORM_ARCH}-${ROLLING_CACHE_KEY}-${packageLockJsonHash}`,
     ],
+  };
+}
+
+export async function getAngularCache(): Promise<Cache> {
+  const { packageLockJsonHash } = await getPackageHashes();
+  const angularConfig = await getAngularConfig();
+
+  return {
+    path: angularConfig?.cli?.cache?.path ?? ANGULAR_CACHE,
+    keys: [`angular-${CACHE_VERSION}-${PLATFORM_ARCH}-${packageLockJsonHash}`],
   };
 }
