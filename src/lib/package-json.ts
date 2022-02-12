@@ -9,12 +9,14 @@ let npmDependencies: { [key: string]: any } | null = null;
 
 export async function hasNpmDependency(name: string): Promise<boolean> {
   if (npmDependencies != null) {
+    const hasDependency = npmDependencies[name] != null;
+    info(hasDependency ? `Detected ${name} is a dependency` : `Detected ${name} is not a dependency`);
     return npmDependencies[name] != null;
   }
 
   const packageJson: JSONSchemaForNPMPackageJsonFiles = JSON.parse((await readFile(PACKAGE_JSON)).toString());
   npmDependencies = { ...packageJson.dependencies, ...packageJson.devDependencies };
-  const hasDependency = npmDependencies[name] != null;
+  const hasDependency = npmDependencies != null && npmDependencies[name] != null;
 
   info(hasDependency ? `Detected ${name} is a dependency` : `Detected ${name} is not a dependency`);
 

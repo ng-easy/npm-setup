@@ -60403,11 +60403,13 @@ let npmDependencies = null;
 function hasNpmDependency(name) {
     return __awaiter(this, void 0, void 0, function* () {
         if (npmDependencies != null) {
+            const hasDependency = npmDependencies[name] != null;
+            (0, core_1.info)(hasDependency ? `Detected ${name} is a dependency` : `Detected ${name} is not a dependency`);
             return npmDependencies[name] != null;
         }
         const packageJson = JSON.parse((yield (0, fs_extra_1.readFile)(exports.PACKAGE_JSON)).toString());
         npmDependencies = Object.assign(Object.assign({}, packageJson.dependencies), packageJson.devDependencies);
-        const hasDependency = npmDependencies[name] != null;
+        const hasDependency = npmDependencies != null && npmDependencies[name] != null;
         (0, core_1.info)(hasDependency ? `Detected ${name} is a dependency` : `Detected ${name} is not a dependency`);
         return hasDependency;
     });
