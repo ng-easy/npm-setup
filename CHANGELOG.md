@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/ng-easy/npm-setup/compare/v1.7.5...v1.8.0) (2022-02-13)
+
+
+### Features
+
+* **angular:** cache angular artifacts ([#185](https://github.com/ng-easy/npm-setup/issues/185)) ([76331f9](https://github.com/ng-easy/npm-setup/commit/76331f9f48fe99b73f565bdd6b1249aee032dba9))
+
 ## [1.7.5](https://github.com/ng-easy/npm-setup/compare/v1.7.4...v1.7.5) (2021-11-21)
 
 
