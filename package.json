@@ -38,10 +38,10 @@
     "semantic-release": "semantic-release"
   },
   "dependencies": {
-    "@actions/cache": "^1.0.8",
+    "@actions/cache": "^1.0.9",
     "@actions/core": "^1.6.0",
     "@actions/github": "^5.0.0",
-    "fs-extra": "^10.0.0",
+    "fs-extra": "^10.0.1",
     "hasha": "^5.2.2",
     "quote": "^0.4.0"
   },
