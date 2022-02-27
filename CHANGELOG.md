@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/ng-easy/npm-setup/compare/v1.8.0...v1.8.1) (2022-02-27)
+
+
+### Bug Fixes
+
+* **deps:** :arrow_up: update all non-major dependencies ([ca98fa8](https://github.com/ng-easy/npm-setup/commit/ca98fa87778df103291ab128a3de861bb22da4db))
+
 # [1.8.0](https://github.com/ng-easy/npm-setup/compare/v1.7.5...v1.8.0) (2022-02-13)
 
 
