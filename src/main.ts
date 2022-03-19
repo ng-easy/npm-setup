@@ -45,7 +45,7 @@ export async function npmSetupMainAction() {
   }
 }
 
-if (!module.parent) {
+if (require.main === module) {
   npmSetupMainAction()
     .then(() => {
       info('');

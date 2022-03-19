@@ -17,7 +17,7 @@ export async function npmSetupPostAction() {
   }
 }
 
-if (!module.parent) {
+if (require.main === module) {
   npmSetupPostAction()
     .then(() => {
       info('');
