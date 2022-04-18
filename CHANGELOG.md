@@ -1,3 +1,10 @@
+## [1.8.6](https://github.com/ng-easy/npm-setup/compare/v1.8.5...v1.8.6) (2022-04-18)
+
+
+### Bug Fixes
+
+* **deps:** :arrow_up: update dependency fs-extra to ^10.1.0 ([9616b62](https://github.com/ng-easy/npm-setup/commit/9616b6260103cae50bbffa9d4645a2c79a8843f0))
+
 ## [1.8.5](https://github.com/ng-easy/npm-setup/compare/v1.8.4...v1.8.5) (2022-04-10)
 
 
