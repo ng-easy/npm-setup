@@ -61637,6 +61637,7 @@ const fs_extra_1 = __nccwpck_require__(5630);
 const angular_1 = __nccwpck_require__(2474);
 const git_1 = __nccwpck_require__(3492);
 const hash_1 = __nccwpck_require__(9279);
+const npm_1 = __nccwpck_require__(2247);
 const nx_1 = __nccwpck_require__(9928);
 exports.NODE_MODULES = 'node_modules';
 exports.NPM_CACHE = (0, path_1.normalize)((0, path_1.join)((0, os_1.homedir)(), '.npm'));
@@ -61698,7 +61699,7 @@ function getNodeModulesCache() {
         const { packageLockJsonHash } = yield (0, hash_1.getPackageHashes)();
         return {
             path: exports.NODE_MODULES,
-            keys: [`node-${exports.CACHE_VERSION}-${exports.PLATFORM_ARCH}-${packageLockJsonHash}`],
+            keys: [`node-${(0, npm_1.getNodeVersion)()}-${exports.CACHE_VERSION}-${exports.PLATFORM_ARCH}-${packageLockJsonHash}`],
         };
     });
 }
@@ -61709,9 +61710,9 @@ function getNpmCache() {
         return {
             path: exports.NPM_CACHE,
             keys: [
-                `npm-${exports.CACHE_VERSION}-${exports.PLATFORM_ARCH}-${exports.ROLLING_CACHE_KEY}-${packageJsonHash}-${packageLockJsonHash}`,
-                `npm-${exports.CACHE_VERSION}-${exports.PLATFORM_ARCH}-${exports.ROLLING_CACHE_KEY}-${packageJsonHash}`,
-                `npm-${exports.CACHE_VERSION}-${exports.PLATFORM_ARCH}-${exports.ROLLING_CACHE_KEY}`,
+                `npm-${(0, npm_1.getNodeVersion)()}-${exports.CACHE_VERSION}-${exports.PLATFORM_ARCH}-${exports.ROLLING_CACHE_KEY}-${packageJsonHash}-${packageLockJsonHash}`,
+                `npm-${(0, npm_1.getNodeVersion)()}-${exports.CACHE_VERSION}-${exports.PLATFORM_ARCH}-${exports.ROLLING_CACHE_KEY}-${packageJsonHash}`,
+                `npm-${(0, npm_1.getNodeVersion)()}-${exports.CACHE_VERSION}-${exports.PLATFORM_ARCH}-${exports.ROLLING_CACHE_KEY}`,
             ],
         };
     });
@@ -61848,6 +61849,45 @@ function getPackageHashes() {
     });
 }
 exports.getPackageHashes = getPackageHashes;
+
+
+/***/ }),
+
+/***/ 2247:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getNodeVersion = exports.installDependencies = void 0;
+const core_1 = __nccwpck_require__(2186);
+const exec_1 = __nccwpck_require__(1514);
+const io_1 = __nccwpck_require__(7436);
+const quote_1 = __importDefault(__nccwpck_require__(5427));
+function installDependencies() {
+    return __awaiter(this, void 0, void 0, function* () {
+        (0, core_1.info)(`Installing dependencies with npm ci`);
+        const npmPath = yield (0, io_1.which)('npm', true);
+        yield (0, exec_1.exec)((0, quote_1.default)(npmPath), ['ci']);
+    });
+}
+exports.installDependencies = installDependencies;
+function getNodeVersion() {
+    return process.version;
+}
+exports.getNodeVersion = getNodeVersion;
 
 
 /***/ }),
