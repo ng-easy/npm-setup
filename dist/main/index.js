@@ -43916,8 +43916,11 @@ function copySync (src, dest, opts) {
 
   // Warn about using preserveTimestamps on 32-bit node
   if (opts.preserveTimestamps && process.arch === 'ia32') {
-    console.warn(`fs-extra: Using the preserveTimestamps option in 32-bit node is not recommended;\n
-    see https://github.com/jprichardson/node-fs-extra/issues/269`)
+    process.emitWarning(
+      'Using the preserveTimestamps option in 32-bit node is not recommended;\n\n' +
+      '\tsee https://github.com/jprichardson/node-fs-extra/issues/269',
+      'Warning', 'fs-extra-WARN0002'
+    )
   }
 
   const { srcStat, destStat } = stat.checkPathsSync(src, dest, 'copy', opts)
@@ -44096,8 +44099,11 @@ function copy (src, dest, opts, cb) {
 
   // Warn about using preserveTimestamps on 32-bit node
   if (opts.preserveTimestamps && process.arch === 'ia32') {
-    console.warn(`fs-extra: Using the preserveTimestamps option in 32-bit node is not recommended;\n
-    see https://github.com/jprichardson/node-fs-extra/issues/269`)
+    process.emitWarning(
+      'Using the preserveTimestamps option in 32-bit node is not recommended;\n\n' +
+      '\tsee https://github.com/jprichardson/node-fs-extra/issues/269',
+      'Warning', 'fs-extra-WARN0001'
+    )
   }
 
   stat.checkPaths(src, dest, 'copy', opts, (err, stats) => {
@@ -44845,7 +44851,6 @@ Object.assign(exports, fs)
 api.forEach(method => {
   exports[method] = u(fs[method])
 })
-exports.realpath.native = u(fs.realpath.native)
 
 // We differ from mz/fs in that we still ship the old, broken, fs.exists()
 // since we are a drop-in replacement for the native module
@@ -44907,6 +44912,16 @@ if (typeof fs.writev === 'function') {
       })
     })
   }
+}
+
+// fs.realpath.native sometimes not available if fs is monkey-patched
+if (typeof fs.realpath.native === 'function') {
+  exports.realpath.native = u(fs.realpath.native)
+} else {
+  process.emitWarning(
+    'fs.realpath.native is not a function. Is fs being monkey-patched?',
+    'Warning', 'fs-extra-WARN0003'
+  )
 }
 
 
@@ -45201,6 +45216,8 @@ function move (src, dest, opts, cb) {
     cb = opts
     opts = {}
   }
+
+  opts = opts || {}
 
   const overwrite = opts.overwrite || opts.clobber || false
 
@@ -55692,7 +55709,7 @@ function coerce (version, options) {
 /***/ 4351:
 /***/ ((module) => {
 
-/*! *****************************************************************************
+/******************************************************************************
 Copyright (c) Microsoft Corporation.
 
 Permission to use, copy, modify, and/or distribute this software for any
@@ -55730,6 +55747,7 @@ var __importStar;
 var __importDefault;
 var __classPrivateFieldGet;
 var __classPrivateFieldSet;
+var __classPrivateFieldIn;
 var __createBinding;
 (function (factory) {
     var root = typeof global === "object" ? global : typeof self === "object" ? self : typeof this === "object" ? this : {};
@@ -55846,7 +55864,11 @@ var __createBinding;
 
     __createBinding = Object.create ? (function(o, m, k, k2) {
         if (k2 === undefined) k2 = k;
-        Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+        var desc = Object.getOwnPropertyDescriptor(m, k);
+        if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+            desc = { enumerable: true, get: function() { return m[k]; } };
+        }
+        Object.defineProperty(o, k2, desc);
     }) : (function(o, m, k, k2) {
         if (k2 === undefined) k2 = k;
         o[k2] = m[k];
@@ -55973,6 +55995,11 @@ var __createBinding;
         return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
     };
 
+    __classPrivateFieldIn = function (state, receiver) {
+        if (receiver === null || (typeof receiver !== "object" && typeof receiver !== "function")) throw new TypeError("Cannot use 'in' operator on non-object");
+        return typeof state === "function" ? receiver === state : state.has(receiver);
+    };
+
     exporter("__extends", __extends);
     exporter("__assign", __assign);
     exporter("__rest", __rest);
@@ -55997,6 +56024,7 @@ var __createBinding;
     exporter("__importDefault", __importDefault);
     exporter("__classPrivateFieldGet", __classPrivateFieldGet);
     exporter("__classPrivateFieldSet", __classPrivateFieldSet);
+    exporter("__classPrivateFieldIn", __classPrivateFieldIn);
 });
 
 

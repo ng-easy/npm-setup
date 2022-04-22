@@ -4,7 +4,7 @@ import { isAngularRequired } from './lib/angular';
 import { Cache, getAngularCache, getNxCache, saveCacheAction } from './lib/cache';
 import { ixNxCached } from './lib/nx';
 
-export async function npmSetupPostAction() {
+export async function npmSetupPostAction(): Promise<void> {
   const nxCache: Cache = await getNxCache();
   const angularCache: Cache = await getAngularCache();
 
