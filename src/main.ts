@@ -15,7 +15,7 @@ import { installCypress, isCypressRequired } from './lib/cypress';
 import { installDependencies } from './lib/npm';
 import { ixNxCached } from './lib/nx';
 
-export async function npmSetupMainAction() {
+export async function npmSetupMainAction(): Promise<void> {
   const nodeModulesCache: Cache = await getNodeModulesCache();
   const npmModulesCache: Cache = await getNpmCache();
   const cypressCache: Cache = await getCypressCache();

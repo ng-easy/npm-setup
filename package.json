@@ -20,8 +20,8 @@
     "url": "https://github.com/ng-easy/npm-setup.git"
   },
   "engines": {
-    "node": "^14.0.0",
-    "npm": "^7.0.0"
+    "node": "^16.14.0",
+    "npm": "^8.5.5"
   },
   "license": "MIT",
   "scripts": {
@@ -34,7 +34,7 @@
     "build:ncc:main": "ncc build -o dist/main src/main.ts && rimraf dist/main/*/**",
     "build:ncc:post": "ncc build -o dist/post src/post.ts && rimraf dist/post/*/**",
     "build:ncc": "rimraf dist && npm run build:ncc:main && npm run build:ncc:post && rimraf dist/**/*.d.ts",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "semantic-release": "semantic-release"
   },
   "dependencies": {

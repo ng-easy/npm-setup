@@ -8,6 +8,7 @@ import { pathExists } from 'fs-extra';
 import { getAngularConfig } from './angular';
 import { getGitSha } from './git';
 import { getPackageHashes } from './hash';
+import { getNodeVersion } from './npm';
 import { getNxKey } from './nx';
 
 export const NODE_MODULES = 'node_modules';
@@ -74,7 +75,7 @@ export async function getNodeModulesCache(): Promise<Cache> {
 
   return {
     path: NODE_MODULES,
-    keys: [`node-${CACHE_VERSION}-${PLATFORM_ARCH}-${packageLockJsonHash}`],
+    keys: [`node-${getNodeVersion()}-${CACHE_VERSION}-${PLATFORM_ARCH}-${packageLockJsonHash}`],
   };
 }
 
@@ -84,9 +85,9 @@ export async function getNpmCache(): Promise<Cache> {
   return {
     path: NPM_CACHE,
     keys: [
-      `npm-${CACHE_VERSION}-${PLATFORM_ARCH}-${ROLLING_CACHE_KEY}-${packageJsonHash}-${packageLockJsonHash}`,
-      `npm-${CACHE_VERSION}-${PLATFORM_ARCH}-${ROLLING_CACHE_KEY}-${packageJsonHash}`,
-      `npm-${CACHE_VERSION}-${PLATFORM_ARCH}-${ROLLING_CACHE_KEY}`,
+      `npm-${getNodeVersion()}-${CACHE_VERSION}-${PLATFORM_ARCH}-${ROLLING_CACHE_KEY}-${packageJsonHash}-${packageLockJsonHash}`,
+      `npm-${getNodeVersion()}-${CACHE_VERSION}-${PLATFORM_ARCH}-${ROLLING_CACHE_KEY}-${packageJsonHash}`,
+      `npm-${getNodeVersion()}-${CACHE_VERSION}-${PLATFORM_ARCH}-${ROLLING_CACHE_KEY}`,
     ],
   };
 }

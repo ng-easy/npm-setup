@@ -17,7 +17,8 @@
     "emitDecoratorMetadata": true,
     "rootDir": "./src",
     "outDir": "./build",
-    "typeRoots": ["node_modules/@types", "@types"]
+    "typeRoots": ["node_modules/@types", "@types"],
+    "lib": ["es2015"]
   },
   "exclude": ["node_modules"]
 }
