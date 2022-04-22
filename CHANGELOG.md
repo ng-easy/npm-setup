@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/ng-easy/npm-setup/compare/v1.8.6...v2.0.0) (2022-04-22)
+
+
+### chore
+
+* **node:** :arrow_up: update node to v16 and npm to v8.5 ([#221](https://github.com/ng-easy/npm-setup/issues/221)) ([fba4640](https://github.com/ng-easy/npm-setup/commit/fba464037b258d20e5924c9f6fa50b708dee8ef4))
+
+
+### BREAKING CHANGES
+
+* **node:** upgrade major versions of node and npm
+
 ## [1.8.6](https://github.com/ng-easy/npm-setup/compare/v1.8.5...v1.8.6) (2022-04-18)
 
 
