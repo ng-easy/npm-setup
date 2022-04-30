@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/ng-easy/npm-setup/compare/v2.0.0...v2.0.1) (2022-04-30)
+
+
+### Bug Fixes
+
+* **deps:** :arrow_up: update dependency @actions/core to ^1.7.0 ([f5770f8](https://github.com/ng-easy/npm-setup/commit/f5770f8ff41c727a9cc0aa38427974f2e23230e3))
+
 # [2.0.0](https://github.com/ng-easy/npm-setup/compare/v1.8.6...v2.0.0) (2022-04-22)
 
 
