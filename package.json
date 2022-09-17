@@ -48,8 +48,8 @@
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",
     "@commitlint/config-conventional": "^17.1.0",
-    "@ng-easy/eslint-config": "^4.5.35",
-    "@ng-easy/prettier-config": "^5.0.39",
+    "@ng-easy/eslint-config": "^4.5.36",
+    "@ng-easy/prettier-config": "^5.0.40",
     "@schemastore/package": "0.0.6",
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/git": "^10.0.1",
