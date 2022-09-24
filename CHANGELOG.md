@@ -1,3 +1,10 @@
+## [2.0.11](https://github.com/ng-easy/npm-setup/compare/v2.0.10...v2.0.11) (2022-09-24)
+
+
+### Bug Fixes
+
+* **deps:** :arrow_up: update dependency @actions/github to ^5.1.0 ([ab19cdc](https://github.com/ng-easy/npm-setup/commit/ab19cdcfd8e8fda140dbb4affda11773352d7457))
+
 ## [2.0.10](https://github.com/ng-easy/npm-setup/compare/v2.0.9...v2.0.10) (2022-08-20)
 
 
