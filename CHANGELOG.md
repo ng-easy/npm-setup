@@ -1,3 +1,10 @@
+## [2.0.12](https://github.com/ng-easy/npm-setup/compare/v2.0.11...v2.0.12) (2022-10-02)
+
+
+### Bug Fixes
+
+* **deps:** :arrow_up: update all non-major dependencies ([619a89d](https://github.com/ng-easy/npm-setup/commit/619a89d611bfc1cdd2f16edf1bc3851585450d25))
+
 ## [2.0.11](https://github.com/ng-easy/npm-setup/compare/v2.0.10...v2.0.11) (2022-09-24)
 
 
