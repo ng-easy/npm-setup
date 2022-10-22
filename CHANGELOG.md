@@ -1,3 +1,10 @@
+## [2.0.14](https://github.com/ng-easy/npm-setup/compare/v2.0.13...v2.0.14) (2022-10-22)
+
+
+### Bug Fixes
+
+* **deps:** :arrow_up: update dependency @actions/cache to ^3.0.6 ([bff3ee6](https://github.com/ng-easy/npm-setup/commit/bff3ee6682fab695d28414753b934b5c81b0d62f))
+
 ## [2.0.13](https://github.com/ng-easy/npm-setup/compare/v2.0.12...v2.0.13) (2022-10-15)
 
 
