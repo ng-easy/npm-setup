@@ -6,7 +6,7 @@ inputs:
     required: false
     description: Caches NX local execution cache instead of relying on NX Cloud, this param is the key to uniquely identify a job that runs a NX script.
 runs:
-  using: node12
+  using: node16
   main: dist/main/index.js
   post-if: success()
   post: dist/post/index.js
