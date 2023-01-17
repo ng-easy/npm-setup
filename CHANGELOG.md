@@ -1,3 +1,20 @@
+# [3.0.0](https://github.com/ng-easy/npm-setup/compare/v2.0.16...v3.0.0) (2023-01-17)
+
+
+### Bug Fixes
+
+* **deps:** :arrow_up: update dependency @actions/cache to ^3.1.2 ([5e07c25](https://github.com/ng-easy/npm-setup/commit/5e07c255bd1b1d6ae641c92edc3d508fd7342e00))
+
+
+### Features
+
+* **node:** :bug: upgrade to node16 action ([#344](https://github.com/ng-easy/npm-setup/issues/344)) ([#354](https://github.com/ng-easy/npm-setup/issues/354)) ([fc113ea](https://github.com/ng-easy/npm-setup/commit/fc113ea5c3c411935150b6b2f2e86f5884ae4499))
+
+
+### BREAKING CHANGES
+
+* **node:** Use node 16 Closes #344
+
 ## [2.0.16](https://github.com/ng-easy/npm-setup/compare/v2.0.15...v2.0.16) (2022-12-31)
 
 

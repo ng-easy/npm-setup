@@ -1,6 +1,6 @@
 {
   "name": "@ng-easy/npm-setup",
-  "version": "2.0.16",
+  "version": "3.0.0",
   "description": "GitHub Action to automate the installation of npm dependencies for Angular projects and NX workspaces",
   "keywords": [
     "npm",
